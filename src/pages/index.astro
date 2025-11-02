@@ -3,76 +3,88 @@ import Layout from '../layouts/Layout.astro';
 
 const cookies = [
 	{
+		id: 1,
 		name: "Original",
 		description: "Classic cookie recipe with a perfect balance of sweetness",
-		price: "RM 5.00",
+		price: 5.00,
 		image: "🍪"
 	},
 	{
+		id: 2,
 		name: "Original Marsh",
 		description: "Original cookie topped with gooey marshmallow",
-		price: "RM 6.00",
+		price: 6.00,
 		image: "🍪"
 	},
 	{
+		id: 3,
 		name: "Red Velvet",
 		description: "Rich red velvet cookie with a hint of cocoa",
-		price: "RM 6.00",
+		price: 6.00,
 		image: "❤️"
 	},
 	{
+		id: 4,
 		name: "Red Velvet Marsh",
 		description: "Red velvet cookie with fluffy marshmallow topping",
-		price: "RM 7.00",
+		price: 7.00,
 		image: "❤️"
 	},
 	{
+		id: 5,
 		name: "Red Velvet Cream Cheese",
 		description: "Red velvet cookie with creamy cream cheese frosting",
-		price: "RM 7.00",
+		price: 7.00,
 		image: "❤️"
 	},
 	{
+		id: 6,
 		name: "Smores",
 		description: "Graham cracker, chocolate, and marshmallow perfection",
-		price: "RM 8.00",
+		price: 8.00,
 		image: "🔥"
 	},
 	{
+		id: 7,
 		name: "Matcha",
 		description: "Premium Japanese matcha green tea cookie",
-		price: "RM 6.00",
+		price: 6.00,
 		image: "🍵"
 	},
 	{
+		id: 8,
 		name: "Matcha Cream Cheese",
 		description: "Matcha cookie with smooth cream cheese frosting",
-		price: "RM 7.00",
+		price: 7.00,
 		image: "🍵"
 	},
 	{
+		id: 9,
 		name: "Matcha Marshmallow",
 		description: "Matcha cookie topped with sweet marshmallow",
-		price: "RM 7.00",
+		price: 7.00,
 		image: "🍵"
 	},
 	{
+		id: 10,
 		name: "Chocolate",
 		description: "Rich, decadent chocolate cookie for chocolate lovers",
-		price: "RM 6.00",
+		price: 6.00,
 		image: "🍫"
 	},
 	{
+		id: 11,
 		name: "Chocolate Marshmallow",
 		description: "Chocolate cookie with fluffy marshmallow topping",
-		price: "RM 7.00",
+		price: 7.00,
 		image: "🍫"
 	},
 	{
+		id: 12,
 		name: "Chocolate Cream Cheese",
 		description: "Chocolate cookie with velvety cream cheese frosting",
-		price: "RM 7.00",
-		image: "�"
+		price: 7.00,
+		image: "🍫"
 	}
 ];
 ---
@@ -93,6 +105,16 @@ const cookies = [
 				<li><a href="#cookies">Cookies</a></li>
 				<li><a href="#about">About</a></li>
 				<li><a href="#contact">Contact</a></li>
+				<li>
+					<button class="cart-icon-btn" id="cartButton" aria-label="Shopping Cart">
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<circle cx="9" cy="21" r="1"/>
+							<circle cx="20" cy="21" r="1"/>
+							<path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+						</svg>
+						<span class="cart-count" id="cartCount">0</span>
+					</button>
+				</li>
 			</ul>
 		</div>
 	</nav>
@@ -151,7 +173,7 @@ const cookies = [
 		</div>
 		<div class="cookies-grid">
 			{cookies.map((cookie, index) => (
-				<div class="cookie-card reveal" style={`animation-delay: ${index * 0.1}s`}>
+				<div class="cookie-card reveal" style={`animation-delay: ${index * 0.1}s`} data-cookie-id={cookie.id}>
 					<div class="card-shine"></div>
 					<div class="cookie-icon-wrapper">
 						<div class="cookie-icon">{cookie.image}</div>
@@ -159,14 +181,41 @@ const cookies = [
 					<h3>{cookie.name}</h3>
 					<p class="cookie-description">{cookie.description}</p>
 					<div class="cookie-footer">
-						<span class="price">{cookie.price}</span>
+						<span class="price">RM {cookie.price.toFixed(2)}</span>
 						<span class="per-dozen">per piece</span>
 					</div>
-					<button class="order-btn">
-						<span>Order Now</span>
-						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<path d="M5 12h14M12 5l7 7-7 7"/>
+					
+					<!-- Quantity Selector -->
+					<div class="quantity-selector">
+						<button class="qty-btn qty-minus" data-cookie-id={cookie.id} aria-label="Decrease quantity">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<line x1="5" y1="12" x2="19" y2="12"/>
+							</svg>
+						</button>
+						<input 
+							type="number" 
+							class="qty-input" 
+							data-cookie-id={cookie.id}
+							min="0" 
+							max="99" 
+							value="0"
+							aria-label="Quantity"
+						/>
+						<button class="qty-btn qty-plus" data-cookie-id={cookie.id} aria-label="Increase quantity">
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<line x1="12" y1="5" x2="12" y2="19"/>
+								<line x1="5" y1="12" x2="19" y2="12"/>
+							</svg>
+						</button>
+					</div>
+
+					<button class="add-to-cart-btn" data-cookie-id={cookie.id} data-cookie-name={cookie.name} data-cookie-price={cookie.price} data-cookie-image={cookie.image}>
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<circle cx="9" cy="21" r="1"/>
+							<circle cx="20" cy="21" r="1"/>
+							<path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
 						</svg>
+						<span>Add to Cart</span>
 					</button>
 				</div>
 			))}
@@ -225,11 +274,216 @@ const cookies = [
 	</footer>
 
 	<!-- Floating WhatsApp Button -->
-	<a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Contact us on WhatsApp">
+	<a href="https://wa.me/601131822616" target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Contact us on WhatsApp">
 		<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
 			<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
 		</svg>
 	</a>
+
+	<!-- Cart Sidebar -->
+	<div class="cart-sidebar" id="cartSidebar">
+		<div class="cart-header">
+			<h3>Your Cart</h3>
+			<button class="close-cart-btn" id="closeCartBtn" aria-label="Close cart">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<line x1="18" y1="6" x2="6" y2="18"/>
+					<line x1="6" y1="6" x2="18" y2="18"/>
+				</svg>
+			</button>
+		</div>
+
+		<!-- Progress Stepper -->
+		<div class="progress-stepper">
+			<div class="step active" data-step="1">
+				<div class="step-circle">1</div>
+				<span>Select</span>
+			</div>
+			<div class="step-line"></div>
+			<div class="step" data-step="2">
+				<div class="step-circle">2</div>
+				<span>Review</span>
+			</div>
+			<div class="step-line"></div>
+			<div class="step" data-step="3">
+				<div class="step-circle">3</div>
+				<span>WhatsApp</span>
+			</div>
+			<div class="step-line"></div>
+			<div class="step" data-step="4">
+				<div class="step-circle">4</div>
+				<span>Payment</span>
+			</div>
+		</div>
+
+		<div class="cart-content" id="cartContent">
+			<div class="empty-cart" id="emptyCart">
+				<div class="empty-cart-icon">🛒</div>
+				<p>Your cart is empty</p>
+				<p class="empty-cart-subtitle">Add some delicious cookies!</p>
+			</div>
+			<div class="cart-items" id="cartItems"></div>
+		</div>
+
+		<div class="cart-footer" id="cartFooter" style="display: none;">
+			<div class="cart-total">
+				<span>Total:</span>
+				<span class="total-amount" id="totalAmount">RM 0.00</span>
+			</div>
+			<button class="checkout-btn" id="checkoutBtn">
+				<span>Proceed to Order</span>
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<path d="M5 12h14M12 5l7 7-7 7"/>
+				</svg>
+			</button>
+		</div>
+	</div>
+
+	<!-- Cart Overlay -->
+	<div class="cart-overlay" id="cartOverlay"></div>
+
+	<!-- Order Summary Modal -->
+	<div class="order-modal" id="orderModal">
+		<div class="order-modal-content" id="orderModalContent">
+			<div class="modal-header">
+				<h2>Order Summary</h2>
+				<button class="close-modal-btn" id="closeModalBtn" aria-label="Close">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<line x1="18" y1="6" x2="6" y2="18"/>
+						<line x1="6" y1="6" x2="18" y2="18"/>
+					</svg>
+				</button>
+			</div>
+
+			<!-- Progress Stepper in Modal -->
+			<div class="progress-stepper modal-stepper">
+				<div class="step completed" data-step="1">
+					<div class="step-circle">✓</div>
+					<span>Select</span>
+				</div>
+				<div class="step-line active"></div>
+				<div class="step active" data-step="2">
+					<div class="step-circle">2</div>
+					<span>Review</span>
+				</div>
+				<div class="step-line"></div>
+				<div class="step" data-step="3">
+					<div class="step-circle">3</div>
+					<span>WhatsApp</span>
+				</div>
+				<div class="step-line"></div>
+				<div class="step" data-step="4">
+					<div class="step-circle">4</div>
+					<span>Payment</span>
+				</div>
+			</div>
+
+			<div class="order-summary-content" id="orderSummaryContent">
+				<!-- Will be populated by JavaScript -->
+			</div>
+
+			<div class="modal-actions">
+				<button class="btn-secondary" id="backToCartBtn">
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M19 12H5M12 19l-7-7 7-7"/>
+					</svg>
+					<span>Back to Cart</span>
+				</button>
+				<button class="btn-primary" id="sendWhatsAppBtn">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+						<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+					</svg>
+					<span>Send via WhatsApp</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Payment Modal -->
+	<div class="order-modal" id="paymentModal">
+		<div class="order-modal-content payment-modal-content">
+			<div class="modal-header">
+				<h2>Payment</h2>
+				<button class="close-payment-modal-btn" id="closePaymentModalBtn" aria-label="Close">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<line x1="18" y1="6" x2="6" y2="18"/>
+						<line x1="6" y1="6" x2="18" y2="18"/>
+					</svg>
+				</button>
+			</div>
+
+			<!-- Progress Stepper in Payment Modal -->
+			<div class="progress-stepper modal-stepper">
+				<div class="step completed" data-step="1">
+					<div class="step-circle">✓</div>
+					<span>Select</span>
+				</div>
+				<div class="step-line completed"></div>
+				<div class="step completed" data-step="2">
+					<div class="step-circle">✓</div>
+					<span>Review</span>
+				</div>
+				<div class="step-line completed"></div>
+				<div class="step completed" data-step="3">
+					<div class="step-circle">✓</div>
+					<span>WhatsApp</span>
+				</div>
+				<div class="step-line active"></div>
+				<div class="step active" data-step="4">
+					<div class="step-circle">4</div>
+					<span>Payment</span>
+				</div>
+			</div>
+
+			<div class="payment-content">
+				<div class="payment-instructions">
+					<div class="instruction-step">
+						<div class="instruction-number">1</div>
+						<p>Wait for our order confirmation via WhatsApp</p>
+					</div>
+					<div class="instruction-step">
+						<div class="instruction-number">2</div>
+						<p>Scan the QR code below to make payment</p>
+					</div>
+					<div class="instruction-step">
+						<div class="instruction-number">3</div>
+						<p>Send payment screenshot to us via WhatsApp</p>
+					</div>
+					<div class="instruction-step">
+						<div class="instruction-number">4</div>
+						<p>Cookies will be delivered the next day!</p>
+					</div>
+				</div>
+
+				<div class="qr-code-section">
+					<div class="qr-code-wrapper">
+						<img src="https://asset.jeki.uk/qr-code-payment.jpeg" alt="Payment QR Code" class="qr-code-image" id="qrCodeImage" />
+						<!-- <div class="qr-placeholder">
+							<svg width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+								<rect x="3" y="3" width="7" height="7" rx="1"/>
+								<rect x="14" y="3" width="7" height="7" rx="1"/>
+								<rect x="3" y="14" width="7" height="7" rx="1"/>
+								<rect x="14" y="14" width="7" height="7" rx="1"/>
+								<path d="M5 5h3v3H5zM16 5h3v3h-3zM5 16h3v3H5zM16 16h3v3h-3z"/>
+							</svg>
+							<p>Payment QR Code</p>
+							<p class="qr-note">Upload your QR code image as<br/><code>/public/qr-code-payment.png</code></p>
+						</div> -->
+					</div>
+					<div class="payment-total">
+						<p>Total Amount</p>
+						<p class="payment-amount" id="paymentAmount">RM 0.00</p>
+					</div>
+				</div>
+
+				<button class="btn-whatsapp-large" id="sendPaymentProofBtn">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+						<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+					</svg>
+					<span>Send Payment Proof on WhatsApp</span>
+				</button>
+			</div>
+		</div>
+	</div>
 
 	<style>
 		/* Decorative Background Elements */
@@ -1046,6 +1300,809 @@ const cookies = [
 			transform: scale(1.1);
 		}
 
+		/* Cart Icon in Nav */
+		.cart-icon-btn {
+			position: relative;
+			padding: 0.5rem;
+			background: none;
+			color: var(--color-dark);
+			border-radius: 50%;
+			transition: all 0.3s ease;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.cart-icon-btn:hover {
+			background: rgba(139, 115, 85, 0.1);
+			color: var(--color-primary);
+		}
+
+		.cart-count {
+			position: absolute;
+			top: -4px;
+			right: -4px;
+			background: linear-gradient(135deg, var(--color-secondary), #D4A574);
+			color: var(--color-white);
+			font-size: 0.7rem;
+			font-weight: 700;
+			min-width: 20px;
+			height: 20px;
+			border-radius: 10px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 0 5px;
+			box-shadow: 0 2px 8px rgba(212, 165, 116, 0.4);
+			animation: bounce 0.5s ease;
+		}
+
+		.cart-count.hidden {
+			display: none;
+		}
+
+		/* Quantity Selector */
+		.quantity-selector {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.75rem;
+			margin-bottom: 1rem;
+			opacity: 0;
+			transform: translateY(10px);
+			transition: all 0.3s ease;
+		}
+
+		.cookie-card:hover .quantity-selector {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		.qty-btn {
+			width: 32px;
+			height: 32px;
+			border-radius: 50%;
+			background: rgba(139, 115, 85, 0.1);
+			color: var(--color-primary);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: all 0.3s ease;
+			border: 1px solid rgba(139, 115, 85, 0.2);
+		}
+
+		.qty-btn:hover {
+			background: var(--color-primary);
+			color: var(--color-white);
+			transform: scale(1.1);
+		}
+
+		.qty-input {
+			width: 50px;
+			height: 36px;
+			text-align: center;
+			border: 2px solid rgba(139, 115, 85, 0.2);
+			border-radius: 8px;
+			font-size: 1rem;
+			font-weight: 600;
+			color: var(--color-dark);
+			background: var(--color-white);
+			transition: all 0.3s ease;
+		}
+
+		.qty-input:focus {
+			outline: none;
+			border-color: var(--color-secondary);
+			box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.2);
+		}
+
+		/* Hide number input spinners */
+		.qty-input::-webkit-inner-spin-button,
+		.qty-input::-webkit-outer-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		.qty-input[type=number] {
+			-moz-appearance: textfield;
+		}
+
+		/* Add to Cart Button */
+		.add-to-cart-btn {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5rem;
+			padding: 0.75rem 1.75rem;
+			background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+			color: var(--color-white);
+			border-radius: 50px;
+			font-weight: 500;
+			font-size: 0.9rem;
+			transition: all 0.3s ease;
+			opacity: 0;
+			transform: translateY(10px);
+			width: 100%;
+			justify-content: center;
+		}
+
+		.cookie-card:hover .add-to-cart-btn {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		.add-to-cart-btn:hover {
+			transform: scale(1.05);
+			box-shadow: 0 6px 20px rgba(139, 115, 85, 0.3);
+		}
+
+		.add-to-cart-btn.added {
+			background: linear-gradient(135deg, #25D366, #20b358);
+		}
+
+		/* Cart Sidebar */
+		.cart-sidebar {
+			position: fixed;
+			top: 0;
+			right: -450px;
+			width: 450px;
+			height: 100vh;
+			background: var(--color-white);
+			box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+			z-index: 1001;
+			transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+			display: flex;
+			flex-direction: column;
+		}
+
+		.cart-sidebar.open {
+			right: 0;
+		}
+
+		.cart-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 1.5rem 2rem;
+			border-bottom: 1px solid rgba(139, 115, 85, 0.1);
+			background: linear-gradient(135deg, var(--color-light), var(--color-white));
+		}
+
+		.cart-header h3 {
+			font-size: 1.5rem;
+			color: var(--color-dark);
+		}
+
+		.close-cart-btn {
+			width: 36px;
+			height: 36px;
+			border-radius: 50%;
+			background: rgba(139, 115, 85, 0.1);
+			color: var(--color-primary);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: all 0.3s ease;
+		}
+
+		.close-cart-btn:hover {
+			background: var(--color-primary);
+			color: var(--color-white);
+			transform: rotate(90deg);
+		}
+
+		/* Progress Stepper */
+		.progress-stepper {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 1.5rem 2rem;
+			background: var(--color-white);
+			border-bottom: 1px solid rgba(139, 115, 85, 0.1);
+		}
+
+		.step {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.5rem;
+			flex: 0 0 auto;
+		}
+
+		.step-circle {
+			width: 36px;
+			height: 36px;
+			border-radius: 50%;
+			background: rgba(139, 115, 85, 0.1);
+			color: var(--color-primary);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: 600;
+			font-size: 0.9rem;
+			transition: all 0.3s ease;
+			border: 2px solid transparent;
+		}
+
+		.step.active .step-circle {
+			background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+			color: var(--color-white);
+			box-shadow: 0 4px 12px rgba(139, 115, 85, 0.3);
+		}
+
+		.step.completed .step-circle {
+			background: var(--color-whatsapp);
+			color: var(--color-white);
+			border-color: var(--color-whatsapp);
+		}
+
+		.step span {
+			font-size: 0.75rem;
+			font-weight: 500;
+			color: var(--color-primary);
+			opacity: 0.6;
+		}
+
+		.step.active span,
+		.step.completed span {
+			opacity: 1;
+			font-weight: 600;
+		}
+
+		.step-line {
+			flex: 1;
+			height: 2px;
+			background: rgba(139, 115, 85, 0.2);
+			margin: 0 0.5rem;
+			position: relative;
+			top: -10px;
+		}
+
+		.step-line.active {
+			background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+		}
+
+		.step-line.completed {
+			background: var(--color-whatsapp);
+		}
+
+		/* Cart Content */
+		.cart-content {
+			flex: 1;
+			overflow-y: auto;
+			padding: 1.5rem 2rem;
+		}
+
+		.empty-cart {
+			text-align: center;
+			padding: 3rem 1rem;
+			color: var(--color-primary);
+		}
+
+		.empty-cart-icon {
+			font-size: 5rem;
+			margin-bottom: 1rem;
+			opacity: 0.5;
+		}
+
+		.empty-cart p {
+			font-size: 1.1rem;
+			margin-bottom: 0.5rem;
+		}
+
+		.empty-cart-subtitle {
+			font-size: 0.9rem;
+			opacity: 0.7;
+		}
+
+		/* Cart Items */
+		.cart-item {
+			display: flex;
+			gap: 1rem;
+			padding: 1rem;
+			background: var(--color-light);
+			border-radius: 12px;
+			margin-bottom: 1rem;
+			transition: all 0.3s ease;
+			animation: slideIn 0.3s ease;
+		}
+
+		@keyframes slideIn {
+			from {
+				opacity: 0;
+				transform: translateX(20px);
+			}
+			to {
+				opacity: 1;
+				transform: translateX(0);
+			}
+		}
+
+		.cart-item:hover {
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+		}
+
+		.cart-item-icon {
+			font-size: 2.5rem;
+			flex-shrink: 0;
+		}
+
+		.cart-item-details {
+			flex: 1;
+		}
+
+		.cart-item-name {
+			font-weight: 600;
+			color: var(--color-dark);
+			margin-bottom: 0.25rem;
+		}
+
+		.cart-item-price {
+			color: var(--color-primary);
+			font-size: 0.9rem;
+		}
+
+		.cart-item-quantity {
+			color: var(--color-secondary);
+			font-size: 0.85rem;
+			font-weight: 500;
+		}
+
+		.cart-item-actions {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
+			justify-content: space-between;
+		}
+
+		.cart-item-total {
+			font-weight: 700;
+			color: var(--color-dark);
+			font-size: 1.1rem;
+		}
+
+		.remove-item-btn {
+			padding: 0.25rem 0.5rem;
+			color: #dc3545;
+			font-size: 0.85rem;
+			transition: all 0.3s ease;
+			border-radius: 4px;
+		}
+
+		.remove-item-btn:hover {
+			background: rgba(220, 53, 69, 0.1);
+		}
+
+		/* Cart Footer */
+		.cart-footer {
+			padding: 1.5rem 2rem;
+			border-top: 1px solid rgba(139, 115, 85, 0.1);
+			background: var(--color-light);
+		}
+
+		.cart-total {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 1rem;
+			font-size: 1.2rem;
+			font-weight: 600;
+			color: var(--color-dark);
+		}
+
+		.total-amount {
+			font-size: 1.5rem;
+			background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+		}
+
+		.checkout-btn {
+			width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.75rem;
+			padding: 1.1rem 2rem;
+			background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+			color: var(--color-white);
+			border-radius: 50px;
+			font-weight: 600;
+			font-size: 1rem;
+			transition: all 0.3s ease;
+			box-shadow: 0 4px 20px rgba(139, 115, 85, 0.3);
+		}
+
+		.checkout-btn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 6px 30px rgba(139, 115, 85, 0.4);
+		}
+
+		/* Cart Overlay */
+		.cart-overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.5);
+			backdrop-filter: blur(4px);
+			z-index: 1000;
+			opacity: 0;
+			visibility: hidden;
+			transition: all 0.3s ease;
+		}
+
+		.cart-overlay.active {
+			opacity: 1;
+			visibility: visible;
+		}
+
+		/* Order Modal */
+		.order-modal {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.6);
+			backdrop-filter: blur(8px);
+			z-index: 1002;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			opacity: 0;
+			visibility: hidden;
+			transition: all 0.3s ease;
+			padding: 2rem;
+		}
+
+		.order-modal.active {
+			opacity: 1;
+			visibility: visible;
+		}
+
+		.order-modal-content {
+			background: var(--color-white);
+			border-radius: 24px;
+			max-width: 700px;
+			width: 100%;
+			max-height: 90vh;
+			overflow-y: auto;
+			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+			animation: modalSlideUp 0.4s ease;
+		}
+
+		@keyframes modalSlideUp {
+			from {
+				opacity: 0;
+				transform: translateY(40px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		.modal-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 2rem 2.5rem;
+			border-bottom: 1px solid rgba(139, 115, 85, 0.1);
+			background: linear-gradient(135deg, var(--color-light), var(--color-white));
+		}
+
+		.modal-header h2 {
+			font-size: 1.8rem;
+			color: var(--color-dark);
+		}
+
+		.close-modal-btn,
+		.close-payment-modal-btn {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			background: rgba(139, 115, 85, 0.1);
+			color: var(--color-primary);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: all 0.3s ease;
+		}
+
+		.close-modal-btn:hover,
+		.close-payment-modal-btn:hover {
+			background: var(--color-primary);
+			color: var(--color-white);
+			transform: rotate(90deg);
+		}
+
+		.modal-stepper {
+			border-bottom: none;
+			background: rgba(232, 213, 196, 0.3);
+		}
+
+		.order-summary-content {
+			padding: 2rem 2.5rem;
+		}
+
+		.summary-item {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 1.25rem;
+			background: var(--color-light);
+			border-radius: 12px;
+			margin-bottom: 1rem;
+			transition: all 0.3s ease;
+		}
+
+		.summary-item:hover {
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+		}
+
+		.summary-item-info {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+		}
+
+		.summary-item-icon {
+			font-size: 2.5rem;
+		}
+
+		.summary-item-details h4 {
+			color: var(--color-dark);
+			margin-bottom: 0.25rem;
+		}
+
+		.summary-item-meta {
+			color: var(--color-primary);
+			font-size: 0.9rem;
+		}
+
+		.summary-item-price {
+			text-align: right;
+		}
+
+		.summary-item-total {
+			font-size: 1.3rem;
+			font-weight: 700;
+			color: var(--color-dark);
+			margin-bottom: 0.25rem;
+		}
+
+		.summary-item-unit-price {
+			font-size: 0.85rem;
+			color: var(--color-primary);
+		}
+
+		.summary-divider {
+			height: 2px;
+			background: linear-gradient(90deg, transparent, var(--color-secondary), transparent);
+			margin: 1.5rem 0;
+		}
+
+		.summary-total {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 1.5rem;
+			background: linear-gradient(135deg, rgba(139, 115, 85, 0.1), rgba(212, 165, 116, 0.1));
+			border-radius: 12px;
+			margin-bottom: 1.5rem;
+		}
+
+		.summary-total-label {
+			font-size: 1.3rem;
+			font-weight: 600;
+			color: var(--color-dark);
+		}
+
+		.summary-total-amount {
+			font-size: 2rem;
+			font-weight: 700;
+			background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+		}
+
+		.summary-note {
+			padding: 1rem 1.5rem;
+			background: rgba(37, 211, 102, 0.1);
+			border-left: 4px solid var(--color-whatsapp);
+			border-radius: 8px;
+			color: var(--color-dark);
+			font-size: 0.9rem;
+			line-height: 1.6;
+		}
+
+		.modal-actions {
+			display: flex;
+			gap: 1rem;
+			padding: 2rem 2.5rem;
+			border-top: 1px solid rgba(139, 115, 85, 0.1);
+			background: var(--color-light);
+		}
+
+		.btn-secondary,
+		.btn-primary {
+			flex: 1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.75rem;
+			padding: 1.1rem 2rem;
+			border-radius: 50px;
+			font-weight: 600;
+			font-size: 1rem;
+			transition: all 0.3s ease;
+		}
+
+		.btn-secondary {
+			background: var(--color-white);
+			color: var(--color-primary);
+			border: 2px solid var(--color-primary);
+		}
+
+		.btn-secondary:hover {
+			background: var(--color-primary);
+			color: var(--color-white);
+			transform: translateY(-2px);
+		}
+
+		.btn-primary {
+			background: var(--color-whatsapp);
+			color: var(--color-white);
+			box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+		}
+
+		.btn-primary:hover {
+			background: #20b358;
+			transform: translateY(-2px);
+			box-shadow: 0 6px 30px rgba(37, 211, 102, 0.4);
+		}
+
+		/* Payment Modal Specific Styles */
+		.payment-modal-content {
+			max-width: 600px;
+		}
+
+		.payment-content {
+			padding: 2rem 2.5rem;
+		}
+
+		.payment-instructions {
+			margin-bottom: 2rem;
+		}
+
+		.instruction-step {
+			display: flex;
+			align-items: flex-start;
+			gap: 1rem;
+			margin-bottom: 1.25rem;
+			padding: 1rem;
+			background: var(--color-light);
+			border-radius: 12px;
+			transition: all 0.3s ease;
+		}
+
+		.instruction-step:hover {
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+		}
+
+		.instruction-number {
+			width: 32px;
+			height: 32px;
+			border-radius: 50%;
+			background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+			color: var(--color-white);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: 700;
+			flex-shrink: 0;
+		}
+
+		.instruction-step p {
+			flex: 1;
+			color: var(--color-dark);
+			line-height: 1.6;
+			margin: 0;
+			padding-top: 4px;
+		}
+
+		.qr-code-section {
+			text-align: center;
+			margin-bottom: 2rem;
+		}
+
+		.qr-code-wrapper {
+			position: relative;
+			display: inline-block;
+			padding: 2rem;
+			background: var(--color-white);
+			border-radius: 16px;
+			box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+			margin-bottom: 1.5rem;
+		}
+
+		.qr-code-image {
+			max-width: 250px;
+			height: auto;
+			border-radius: 8px;
+		}
+
+		.qr-placeholder {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 1rem;
+			color: var(--color-primary);
+			opacity: 0.6;
+		}
+
+		.qr-placeholder p {
+			margin: 0;
+			font-size: 0.9rem;
+		}
+
+		.qr-note {
+			font-size: 0.75rem !important;
+			opacity: 0.7;
+			line-height: 1.5;
+		}
+
+		.qr-note code {
+			background: rgba(139, 115, 85, 0.1);
+			padding: 0.2rem 0.4rem;
+			border-radius: 4px;
+			font-family: monospace;
+		}
+
+		.payment-total {
+			margin-bottom: 2rem;
+		}
+
+		.payment-total p:first-child {
+			font-size: 0.9rem;
+			color: var(--color-primary);
+			margin-bottom: 0.5rem;
+		}
+
+		.payment-amount {
+			font-size: 2.5rem;
+			font-weight: 700;
+			background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+		}
+
+		.btn-whatsapp-large {
+			width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.75rem;
+			padding: 1.2rem 2rem;
+			background: var(--color-whatsapp);
+			color: var(--color-white);
+			border-radius: 50px;
+			font-weight: 600;
+			font-size: 1rem;
+			transition: all 0.3s ease;
+			box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+		}
+
+		.btn-whatsapp-large:hover {
+			background: #20b358;
+			transform: translateY(-2px);
+			box-shadow: 0 6px 30px rgba(37, 211, 102, 0.4);
+		}
+
 		/* Responsive Design */
 		@media (max-width: 768px) {
 			.delivery-banner {
@@ -1119,6 +2176,50 @@ const cookies = [
 				width: 26px;
 				height: 26px;
 			}
+
+			.cart-sidebar {
+				width: 100%;
+				right: -100%;
+			}
+
+			.progress-stepper {
+				padding: 1rem;
+				gap: 0.5rem;
+			}
+
+			.step span {
+				font-size: 0.65rem;
+			}
+
+			.step-circle {
+				width: 30px;
+				height: 30px;
+				font-size: 0.8rem;
+			}
+
+			.step-line {
+				margin: 0 0.25rem;
+			}
+
+			.order-modal {
+				padding: 1rem;
+			}
+
+			.modal-header,
+			.order-summary-content,
+			.modal-actions,
+			.payment-content {
+				padding: 1.5rem;
+			}
+
+			.modal-actions {
+				flex-direction: column;
+			}
+
+			.btn-secondary,
+			.btn-primary {
+				width: 100%;
+			}
 		}
 
 		@media (max-width: 480px) {
@@ -1181,6 +2282,276 @@ const cookies = [
 	</style>
 
 	<script>
+		// Cookie data - must match the server-side data
+		const cookiesData = [
+			{ id: 1, name: "Original", price: 5.00, image: "🍪" },
+			{ id: 2, name: "Original Marsh", price: 6.00, image: "🍪" },
+			{ id: 3, name: "Red Velvet", price: 6.00, image: "❤️" },
+			{ id: 4, name: "Red Velvet Marsh", price: 7.00, image: "❤️" },
+			{ id: 5, name: "Red Velvet Cream Cheese", price: 7.00, image: "❤️" },
+			{ id: 6, name: "Smores", price: 8.00, image: "🔥" },
+			{ id: 7, name: "Matcha", price: 6.00, image: "🍵" },
+			{ id: 8, name: "Matcha Cream Cheese", price: 7.00, image: "🍵" },
+			{ id: 9, name: "Matcha Marshmallow", price: 7.00, image: "🍵" },
+			{ id: 10, name: "Chocolate", price: 6.00, image: "🍫" },
+			{ id: 11, name: "Chocolate Marshmallow", price: 7.00, image: "🍫" },
+			{ id: 12, name: "Chocolate Cream Cheese", price: 7.00, image: "🍫" }
+		];
+
+		// Shopping cart state
+		let cart = [];
+
+		// DOM Elements
+		const cartButton = document.getElementById('cartButton');
+		const cartSidebar = document.getElementById('cartSidebar');
+		const cartOverlay = document.getElementById('cartOverlay');
+		const closeCartBtn = document.getElementById('closeCartBtn');
+		const cartCount = document.getElementById('cartCount');
+		const cartItems = document.getElementById('cartItems');
+		const emptyCart = document.getElementById('emptyCart');
+		const cartFooter = document.getElementById('cartFooter');
+		const totalAmount = document.getElementById('totalAmount');
+		const checkoutBtn = document.getElementById('checkoutBtn');
+		const orderModal = document.getElementById('orderModal');
+		const closeModalBtn = document.getElementById('closeModalBtn');
+		const backToCartBtn = document.getElementById('backToCartBtn');
+		const sendWhatsAppBtn = document.getElementById('sendWhatsAppBtn');
+		const orderSummaryContent = document.getElementById('orderSummaryContent');
+		const paymentModal = document.getElementById('paymentModal');
+		const closePaymentModalBtn = document.getElementById('closePaymentModalBtn');
+		const sendPaymentProofBtn = document.getElementById('sendPaymentProofBtn');
+		const paymentAmount = document.getElementById('paymentAmount');
+
+		// Utility Functions
+		function updateCartCount() {
+			const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+			cartCount.textContent = totalItems;
+			if (totalItems > 0) {
+				cartCount.classList.remove('hidden');
+			} else {
+				cartCount.classList.add('hidden');
+			}
+		}
+
+		function calculateTotal() {
+			return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+		}
+
+		function formatPrice(price) {
+			return `RM ${price.toFixed(2)}`;
+		}
+
+		function renderCart() {
+			if (cart.length === 0) {
+				emptyCart.style.display = 'block';
+				cartItems.innerHTML = '';
+				cartFooter.style.display = 'none';
+			} else {
+				emptyCart.style.display = 'none';
+				cartFooter.style.display = 'block';
+				
+				cartItems.innerHTML = cart.map(item => `
+					<div class="cart-item" data-item-id="${item.id}">
+						<div class="cart-item-icon">${item.image}</div>
+						<div class="cart-item-details">
+							<div class="cart-item-name">${item.name}</div>
+							<div class="cart-item-price">${formatPrice(item.price)} each</div>
+							<div class="cart-item-quantity">Quantity: ${item.quantity}</div>
+						</div>
+						<div class="cart-item-actions">
+							<div class="cart-item-total">${formatPrice(item.price * item.quantity)}</div>
+							<button class="remove-item-btn" onclick="removeFromCart(${item.id})">Remove</button>
+						</div>
+					</div>
+				`).join('');
+				
+				totalAmount.textContent = formatPrice(calculateTotal());
+			}
+			updateCartCount();
+		}
+
+		function openCart() {
+			cartSidebar.classList.add('open');
+			cartOverlay.classList.add('active');
+			document.body.style.overflow = 'hidden';
+		}
+
+		function closeCart() {
+			cartSidebar.classList.remove('open');
+			cartOverlay.classList.remove('active');
+			document.body.style.overflow = '';
+		}
+
+		// Cart Functions
+		window.removeFromCart = function(cookieId) {
+			cart = cart.filter(item => item.id !== cookieId);
+			renderCart();
+			
+			// Reset quantity input
+			const qtyInput = document.querySelector(`.qty-input[data-cookie-id="${cookieId}"]`);
+			if (qtyInput) qtyInput.value = '0';
+		};
+
+		function addToCart(cookieId, quantity) {
+			if (quantity <= 0) return;
+
+			const cookie = cookiesData.find(c => c.id === cookieId);
+			if (!cookie) return;
+
+			const existingItem = cart.find(item => item.id === cookieId);
+			
+			if (existingItem) {
+				existingItem.quantity = quantity;
+			} else {
+				cart.push({
+					id: cookie.id,
+					name: cookie.name,
+					price: cookie.price,
+					image: cookie.image,
+					quantity: quantity
+				});
+			}
+
+			renderCart();
+			openCart();
+
+			// Visual feedback
+			const btn = document.querySelector(`.add-to-cart-btn[data-cookie-id="${cookieId}"]`);
+			if (btn) {
+				btn.classList.add('added');
+				setTimeout(() => btn.classList.remove('added'), 1000);
+			}
+		}
+
+		// Quantity Controls
+		document.addEventListener('click', (e) => {
+			if (e.target.closest('.qty-minus')) {
+				const cookieId = parseInt(e.target.closest('.qty-minus').dataset.cookieId);
+				const input = document.querySelector(`.qty-input[data-cookie-id="${cookieId}"]`);
+				const currentValue = parseInt(input.value) || 0;
+				if (currentValue > 0) {
+					input.value = currentValue - 1;
+				}
+			}
+
+			if (e.target.closest('.qty-plus')) {
+				const cookieId = parseInt(e.target.closest('.qty-plus').dataset.cookieId);
+				const input = document.querySelector(`.qty-input[data-cookie-id="${cookieId}"]`);
+				const currentValue = parseInt(input.value) || 0;
+				if (currentValue < 99) {
+					input.value = currentValue + 1;
+				}
+			}
+
+			if (e.target.closest('.add-to-cart-btn')) {
+				const btn = e.target.closest('.add-to-cart-btn');
+				const cookieId = parseInt(btn.dataset.cookieId);
+				const input = document.querySelector(`.qty-input[data-cookie-id="${cookieId}"]`);
+				const quantity = parseInt(input.value) || 0;
+				
+				if (quantity > 0) {
+					addToCart(cookieId, quantity);
+				} else {
+					alert('Please select a quantity first!');
+				}
+			}
+		});
+
+		// Cart UI Controls
+		cartButton.addEventListener('click', openCart);
+		closeCartBtn.addEventListener('click', closeCart);
+		cartOverlay.addEventListener('click', closeCart);
+
+		// Checkout Flow
+		checkoutBtn.addEventListener('click', () => {
+			if (cart.length === 0) return;
+			
+			// Render order summary
+			const summaryHTML = `
+				${cart.map(item => `
+					<div class="summary-item">
+						<div class="summary-item-info">
+							<div class="summary-item-icon">${item.image}</div>
+							<div class="summary-item-details">
+								<h4>${item.name}</h4>
+								<div class="summary-item-meta">${formatPrice(item.price)} × ${item.quantity}</div>
+							</div>
+						</div>
+						<div class="summary-item-price">
+							<div class="summary-item-total">${formatPrice(item.price * item.quantity)}</div>
+							<div class="summary-item-unit-price">${item.quantity} ${item.quantity === 1 ? 'piece' : 'pieces'}</div>
+						</div>
+					</div>
+				`).join('')}
+				<div class="summary-divider"></div>
+				<div class="summary-total">
+					<span class="summary-total-label">Total Amount</span>
+					<span class="summary-total-amount">${formatPrice(calculateTotal())}</span>
+				</div>
+				<div class="summary-note">
+					📱 Click "Send via WhatsApp" to send your order. We'll confirm availability and provide payment details.
+				</div>
+			`;
+			
+			orderSummaryContent.innerHTML = summaryHTML;
+			orderModal.classList.add('active');
+			closeCart();
+		});
+
+		closeModalBtn.addEventListener('click', () => {
+			orderModal.classList.remove('active');
+		});
+
+		backToCartBtn.addEventListener('click', () => {
+			orderModal.classList.remove('active');
+			openCart();
+		});
+
+		sendWhatsAppBtn.addEventListener('click', () => {
+			// Generate WhatsApp message
+			const orderDetails = cart.map(item => 
+				`${item.image} ${item.name} - ${item.quantity} pcs (${formatPrice(item.price * item.quantity)})`
+			).join('%0A');
+			
+			const total = formatPrice(calculateTotal());
+			const message = `🍪 *ZenCookies Order*%0A%0A${orderDetails}%0A%0A*Total: ${total}*%0A%0APlease confirm availability and provide payment details. Thank you!`;
+			
+			const whatsappUrl = `https://wa.me/601131822616?text=${message}`;
+			
+			// Open payment modal
+			orderModal.classList.remove('active');
+			paymentModal.classList.add('active');
+			paymentAmount.textContent = total;
+			
+			// Open WhatsApp in new tab
+			window.open(whatsappUrl, '_blank');
+		});
+
+		closePaymentModalBtn.addEventListener('click', () => {
+			paymentModal.classList.remove('active');
+			document.body.style.overflow = '';
+		});
+
+		sendPaymentProofBtn.addEventListener('click', () => {
+			const message = `Hi! I've completed the payment for my ZenCookies order (${formatPrice(calculateTotal())}). Sending payment proof now. 🍪`;
+			const whatsappUrl = `https://wa.me/601131822616?text=${encodeURIComponent(message)}`;
+			window.open(whatsappUrl, '_blank');
+		});
+
+		// Close modals on overlay click
+		orderModal.addEventListener('click', (e) => {
+			if (e.target === orderModal) {
+				orderModal.classList.remove('active');
+			}
+		});
+
+		paymentModal.addEventListener('click', (e) => {
+			if (e.target === paymentModal) {
+				paymentModal.classList.remove('active');
+				document.body.style.overflow = '';
+			}
+		});
+
 		// Scroll reveal animation
 		const observerOptions = {
 			threshold: 0.1,
@@ -1212,6 +2583,9 @@ const cookies = [
 				}
 			});
 		});
+
+		// Initialize
+		renderCart();
 	</script>
 </Layout>
 
