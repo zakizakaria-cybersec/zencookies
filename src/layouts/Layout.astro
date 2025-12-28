@@ -17,22 +17,29 @@ const { title, description = "Handcrafted artisan cookies made with love" } = As
 		<meta name="generator" content={Astro.generator} />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 		<title>{title}</title>
 	</head>
 	<body>
 		<slot />
 		<style is:global>
 			:root {
-				--color-primary: #8B7355;
-				--color-secondary: #D4A574;
-				--color-accent: #E8D5C4;
-				--color-dark: #2C2416;
-				--color-light: #FAF8F5;
+				--color-primary: #ffd0d7;
+				--color-primary-dark: #d67c8c; /* Darker shade for text accessibility */
+				--color-secondary: #ffe4e8;
+				--color-accent: #fff0f5;
+				--color-dark: #2c1810;
+				--color-light: #FFFFFF;
 				--color-white: #FFFFFF;
 				--color-whatsapp: #25D366;
-				--font-display: 'Playfair Display', serif;
+				--font-display: 'Cinzel', serif;
 				--font-body: 'Inter', sans-serif;
+				
+				/* Glassmorphism & Bento Variables */
+				--glass-bg: rgba(255, 255, 255, 0.7);
+				--glass-border: rgba(255, 255, 255, 0.8);
+				--glass-shadow: 0 8px 32px 0 rgba(255, 208, 215, 0.2);
+				--bento-radius: 32px;
 			}
 
 			* {
@@ -48,9 +55,13 @@ const { title, description = "Handcrafted artisan cookies made with love" } = As
 			body {
 				font-family: var(--font-body);
 				color: var(--color-dark);
-				background-color: var(--color-light);
+				background-color: var(--color-white);
 				line-height: 1.6;
 				overflow-x: hidden;
+				background-image: 
+					radial-gradient(circle at 10% 20%, rgba(255, 20, 147, 0.05) 0%, transparent 20%),
+					radial-gradient(circle at 90% 80%, rgba(255, 182, 193, 0.1) 0%, transparent 20%);
+				background-attachment: fixed;
 			}
 
 			h1, h2, h3, h4, h5, h6 {
