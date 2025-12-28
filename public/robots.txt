@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zencookies.com/sitemap-index.xml

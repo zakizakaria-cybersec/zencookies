@@ -4,21 +4,281 @@ interface Props {
 	description?: string;
 }
 
-const { title, description = "Handcrafted artisan cookies made with love" } = Astro.props;
+const { title, description = "Beli cookies sedap di Johor untuk majlis kahwin, kenduri & acara. Door gift premium, hantaran cookies, 100% Halal. Penghantaran percuma RM100+." } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="ms-MY">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
+		
+		<!-- Primary SEO Meta Tags -->
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta name="keywords" content="beli cookies johor, door gift kahwin johor, cookies majlis kahwin, hantaran cookies, cookies untuk kenduri, door gift murah johor, cookies johor bahru, cookies iskandar puteri, cookies kulai, cookies senai, cookies skudai, cookies pasir gudang, acara korporat johor, cookies halal johor, cookies premium johor, bakery johor, zencookies, cookies untuk majlis, door gift premium, wedding cookies johor, cookies sedap johor, tempah cookies johor" />
+		<meta name="author" content="ZenCookies - Pakar Cookies Johor" />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+		<link rel="canonical" href="https://zencookies.com" />
+
+		<!-- Alternate Language Tags -->
+		<link rel="alternate" hreflang="ms-MY" href="https://zencookies.com" />
+		<link rel="alternate" hreflang="en-MY" href="https://zencookies.com" />
+		<link rel="alternate" hreflang="x-default" href="https://zencookies.com" />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://zencookies.com" />
+		<meta property="og:title" content="ZenCookies | Beli Cookies Johor untuk Majlis Kahwin & Acara | Door Gift Premium" />
+		<meta property="og:description" content="Pakar door gift & hantaran cookies untuk majlis kahwin, kenduri, hari jadi & acara korporat di Johor. 100% Halal, fresh baked, penghantaran percuma RM100+." />
+		<meta property="og:image" content="https://zencookies.com/og-image.jpg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:locale" content="ms_MY" />
+		<meta property="og:site_name" content="ZenCookies" />
+
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:url" content="https://zencookies.com" />
+		<meta name="twitter:title" content="ZenCookies | Beli Cookies Johor untuk Majlis Kahwin & Acara" />
+		<meta name="twitter:description" content="Pakar door gift & hantaran cookies untuk majlis kahwin di Johor. 100% Halal, fresh baked daily." />
+		<meta name="twitter:image" content="https://zencookies.com/og-image.jpg" />
+
+		<!-- Local SEO - Enhanced -->
+		<meta name="geo.region" content="MY-01" />
+		<meta name="geo.placename" content="Johor Bahru, Johor, Malaysia" />
+		<meta name="geo.position" content="1.4927;103.7414" />
+		<meta name="ICBM" content="1.4927, 103.7414" />
+		<meta name="language" content="Malay" />
+		<meta name="coverage" content="Johor" />
+		<meta name="distribution" content="local" />
+		<meta name="target" content="Johor, Malaysia" />
+
+		<!-- Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-		<title>{title}</title>
+
+		<!-- Schema Markup - Local Business -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "Bakery",
+				"@id": "https://zencookies.com/#bakery",
+				"name": "ZenCookies",
+				"alternateName": "Zen Cookies Johor",
+				"image": [
+					"https://zencookies.com/og-image.jpg"
+				],
+				"description": "Pakar door gift dan hantaran cookies untuk majlis kahwin, kenduri, hari jadi, dan acara korporat di seluruh Johor. 100% Halal, fresh baked setiap hari.",
+				"url": "https://zencookies.com",
+				"telephone": "+601131822616",
+				"email": "hello@zencookies.com",
+				"address": {
+					"@type": "PostalAddress",
+					"addressLocality": "Johor Bahru",
+					"addressRegion": "Johor",
+					"postalCode": "81100",
+					"addressCountry": "MY"
+				},
+				"geo": {
+					"@type": "GeoCoordinates",
+					"latitude": "1.4927",
+					"longitude": "103.7414"
+				},
+				"areaServed": [
+					{"@type": "City", "name": "Johor Bahru"},
+					{"@type": "City", "name": "Iskandar Puteri"},
+					{"@type": "City", "name": "Kulai"},
+					{"@type": "City", "name": "Senai"},
+					{"@type": "City", "name": "Skudai"},
+					{"@type": "City", "name": "Pasir Gudang"},
+					{"@type": "City", "name": "Pontian"},
+					{"@type": "City", "name": "Kota Tinggi"},
+					{"@type": "City", "name": "Batu Pahat"},
+					{"@type": "City", "name": "Muar"},
+					{"@type": "State", "name": "Johor"}
+				],
+				"priceRange": "RM5 - RM15",
+				"currenciesAccepted": "MYR",
+				"paymentAccepted": "Cash, Bank Transfer, Online Banking",
+				"openingHoursSpecification": [
+					{
+						"@type": "OpeningHoursSpecification",
+						"dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+						"opens": "09:00",
+						"closes": "21:00"
+					}
+				],
+				"sameAs": [
+					"https://wa.me/601131822616"
+				],
+				"hasOfferCatalog": {
+					"@type": "OfferCatalog",
+					"name": "Cookies Menu",
+					"itemListElement": [
+						{
+							"@type": "Offer",
+							"itemOffered": {
+								"@type": "Product",
+								"name": "Door Gift Cookies Majlis Kahwin",
+								"description": "Door gift cookies premium untuk majlis kahwin dengan packaging eksklusif"
+							}
+						},
+						{
+							"@type": "Offer",
+							"itemOffered": {
+								"@type": "Product",
+								"name": "Hantaran Cookies",
+								"description": "Set hantaran cookies premium dengan dulang cantik"
+							}
+						},
+						{
+							"@type": "Offer",
+							"itemOffered": {
+								"@type": "Product",
+								"name": "Cookies Acara Korporat",
+								"description": "Cookies untuk acara korporat dan mesyuarat"
+							}
+						}
+					]
+				},
+				"aggregateRating": {
+					"@type": "AggregateRating",
+					"ratingValue": "4.9",
+					"reviewCount": "150",
+					"bestRating": "5",
+					"worstRating": "1"
+				}
+			}
+		</script>
+
+		<!-- Schema Markup - Product -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "Product",
+				"name": "Door Gift Cookies Majlis Kahwin Johor",
+				"image": "https://zencookies.com/og-image.jpg",
+				"description": "Door gift cookies premium untuk majlis kahwin di Johor. Packaging cantik, 100% Halal, fresh baked. Sesuai untuk door gift tetamu majlis kahwin, kenduri, dan acara.",
+				"brand": {
+					"@type": "Brand",
+					"name": "ZenCookies"
+				},
+				"offers": {
+					"@type": "AggregateOffer",
+					"lowPrice": "5.00",
+					"highPrice": "15.00",
+					"priceCurrency": "MYR",
+					"availability": "https://schema.org/InStock",
+					"seller": {
+						"@type": "Organization",
+						"name": "ZenCookies"
+					}
+				},
+				"aggregateRating": {
+					"@type": "AggregateRating",
+					"ratingValue": "4.9",
+					"reviewCount": "150"
+				}
+			}
+		</script>
+
+		<!-- Schema Markup - Event Venue Service -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "Service",
+				"serviceType": "Wedding Door Gift Cookies",
+				"name": "Door Gift Cookies untuk Majlis Kahwin di Johor",
+				"description": "Perkhidmatan door gift dan hantaran cookies premium untuk majlis kahwin, kenduri, dan acara di seluruh Johor. Termasuk packaging cantik dan penghantaran.",
+				"provider": {
+					"@type": "LocalBusiness",
+					"name": "ZenCookies",
+					"telephone": "+601131822616"
+				},
+				"areaServed": {
+					"@type": "State",
+					"name": "Johor"
+				},
+				"hasOfferCatalog": {
+					"@type": "OfferCatalog",
+					"name": "Wedding Services",
+					"itemListElement": [
+						{
+							"@type": "Offer",
+							"itemOffered": {
+								"@type": "Service",
+								"name": "Door Gift Majlis Kahwin"
+							}
+						},
+						{
+							"@type": "Offer",
+							"itemOffered": {
+								"@type": "Service",
+								"name": "Hantaran Cookies"
+							}
+						},
+						{
+							"@type": "Offer",
+							"itemOffered": {
+								"@type": "Service",
+								"name": "Kenduri Cookies"
+							}
+						}
+					]
+				}
+			}
+		</script>
+
+		<!-- Schema Markup - BreadcrumbList -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "BreadcrumbList",
+				"itemListElement": [
+					{
+						"@type": "ListItem",
+						"position": 1,
+						"name": "Home",
+						"item": "https://zencookies.com"
+					},
+					{
+						"@type": "ListItem",
+						"position": 2,
+						"name": "Cookies Menu",
+						"item": "https://zencookies.com/#cookies"
+					},
+					{
+						"@type": "ListItem",
+						"position": 3,
+						"name": "Door Gift Kahwin",
+						"item": "https://zencookies.com/#services"
+					}
+				]
+			}
+		</script>
+
+		<!-- Schema Markup - Organization -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "Organization",
+				"name": "ZenCookies",
+				"url": "https://zencookies.com",
+				"logo": "https://zencookies.com/og-image.jpg",
+				"description": "Pakar cookies untuk majlis kahwin dan acara di Johor",
+				"contactPoint": {
+					"@type": "ContactPoint",
+					"telephone": "+601131822616",
+					"contactType": "customer service",
+					"areaServed": "MY",
+					"availableLanguage": ["Malay", "English"]
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<slot />
