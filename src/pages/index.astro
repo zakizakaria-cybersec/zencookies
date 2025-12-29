@@ -1934,6 +1934,7 @@ const categories = [
 			right: -450px;
 			width: 450px;
 			height: 100vh;
+			height: 100dvh;
 			background: rgba(255, 255, 255, 0.8);
 			backdrop-filter: blur(20px);
 			box-shadow: -10px 0 40px rgba(0, 0, 0, 0.05);
@@ -2172,6 +2173,7 @@ const categories = [
 		/* Cart Footer */
 		.cart-footer {
 			padding: 1.5rem 2rem;
+			padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
 			border-top: 1px solid rgba(0,0,0,0.05);
 			background: rgba(255, 255, 255, 0.5);
 			backdrop-filter: blur(10px);
