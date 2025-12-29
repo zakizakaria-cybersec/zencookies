@@ -51,8 +51,8 @@ const categories = [
 		id: "cheesekut",
 		name: "Cheesekut",
 		variations: [
-			{ id: 13, name: "Biscoff Cheesekut", shortName: "Biscoff", description: "Creamy cheesecake cookie with caramelized Biscoff spread", price: 14.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Biscoff%20Cheesekut.PNG&w=500&output=webp" },
-			{ id: 15, name: "Oreo Cheesekut", shortName: "Oreo", description: "Creamy cheesecake cookie with crushed Oreo pieces", price: 14.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Oreo%20Cheesekut.PNG&w=500&output=webp" }
+			{ id: 13, name: "Biscoff Cheesekut", shortName: "Biscoff", description: "Creamy cheesecake cookie with caramelized Biscoff spread", price: 8.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Biscoff%20Cheesekut.PNG&w=500&output=webp" },
+			{ id: 15, name: "Oreo Cheesekut", shortName: "Oreo", description: "Creamy cheesecake cookie with crushed Oreo pieces", price: 7.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Oreo%20Cheesekut.PNG&w=500&output=webp" }
 		]
 	}
 ];
@@ -105,7 +105,6 @@ const categories = [
 	<section id="home" class="hero">
 		<div class="hero-content">
 			<div class="hero-text fade-in-up">
-				<div class="hero-badge">✨ Pakar Cookies Majlis Kahwin & Acara di Johor</div>
 				<h1 class="gradient-text">Cookies Premium<br/>Untuk Anda</h1>
 				<p class="hero-subtitle">Pakar door gift dan hantaran cookies untuk <strong>majlis kahwin, kenduri, hari jadi, dan acara korporat</strong> di seluruh Johor. Halal, fresh baked setiap hari dengan bahan premium. Penghantaran percuma untuk pesanan RM100+.</p>
 				<div class="cta-group">
@@ -120,7 +119,17 @@ const categories = [
 			</div>
 			<div class="hero-image">
 				<div class="cookie-circle"></div>
-				<div class="cookie-emoji floating">🍪</div>
+				<div class="hero-cookies">
+					<div class="cookie-wrapper wrapper-1 floating">
+						<img src="https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Red%20Velvet.PNG&w=500&output=webp" alt="Red Velvet Cookie" class="hero-cookie" />
+					</div>
+					<div class="cookie-wrapper wrapper-2 floating-delayed">
+						<img src="https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Chocolate.PNG&w=500&output=webp" alt="Chocolate Cookie" class="hero-cookie" />
+					</div>
+					<div class="cookie-wrapper wrapper-3 floating-reverse">
+						<img src="https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Matcha.PNG&w=500&output=webp" alt="Matcha Cookie" class="hero-cookie" />
+					</div>
+				</div>
 				<div class="hero-decoration">
 					<div class="sparkle sparkle-1">✨</div>
 					<div class="sparkle sparkle-2">⭐</div>
@@ -970,21 +979,68 @@ const categories = [
 			50% { transform: scale(1.1); opacity: 0.8; }
 		}
 
-		.cookie-emoji {
-			font-size: clamp(12rem, 20vw, 18rem);
+		.hero-cookies {
 			position: relative;
+			width: 450px;
+			height: 450px;
 			z-index: 1;
-			filter: drop-shadow(0 20px 60px rgba(255, 20, 147, 0.15));
 		}
+
+		.cookie-wrapper {
+			position: absolute;
+			transition: all 0.3s ease;
+		}
+
+		.hero-cookie {
+			width: 240px;
+			height: auto;
+			background: #fff;
+			padding: 12px;
+			box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+			transition: transform 0.3s ease;
+		}
+
+		.wrapper-1 { /* Red Velvet */
+			top: 15%;
+			left: 0;
+			z-index: 2;
+		}
+		.wrapper-1 .hero-cookie { transform: rotate(-15deg); }
+
+		.wrapper-2 { /* Chocolate */
+			bottom: 15%;
+			right: 0;
+			z-index: 3;
+		}
+		.wrapper-2 .hero-cookie { transform: rotate(15deg); }
+
+		.wrapper-3 { /* Matcha */
+			top: 0;
+			right: 15%;
+			z-index: 1;
+		}
+		.wrapper-3 .hero-cookie { transform: rotate(5deg); }
 
 		.floating {
 			animation: float 6s ease-in-out infinite;
 		}
 
+		.floating-delayed {
+			animation: float 7s ease-in-out 2s infinite;
+		}
+
+		.floating-reverse {
+			animation: floatReverse 8s ease-in-out 1s infinite;
+		}
+
 		@keyframes float {
-			0%, 100% { transform: translateY(0) rotate(0deg); }
-			25% { transform: translateY(-20px) rotate(5deg); }
-			75% { transform: translateY(-10px) rotate(-5deg); }
+			0%, 100% { transform: translateY(0); }
+			50% { transform: translateY(-20px); }
+		}
+
+		@keyframes floatReverse {
+			0%, 100% { transform: translateY(0); }
+			50% { transform: translateY(15px); }
 		}
 
 		.hero-decoration {
@@ -2593,6 +2649,17 @@ const categories = [
 				height: 300px;
 			}
 
+			.hero-cookies {
+				width: 320px;
+				height: 320px;
+				margin: 0 auto;
+			}
+
+			.hero-cookie {
+				width: 160px;
+				padding: 8px;
+			}
+
 			.cookies-grid {
 				grid-template-columns: 1fr;
 			}
@@ -3199,7 +3266,7 @@ const categories = [
 		sendWhatsAppBtn.addEventListener('click', () => {
 			// Generate WhatsApp message
 			const orderDetails = cart.map(item => 
-				`${item.image} ${item.name} - ${item.quantity} pcs (${formatPrice(item.price * item.quantity)})`
+				`${item.name} - ${item.quantity} pcs (${formatPrice(item.price * item.quantity)})`
 			).join('%0A');
 			
 			const total = formatPrice(calculateTotal());
