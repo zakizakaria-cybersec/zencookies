@@ -575,6 +575,21 @@ const categories = [
 				<!-- Will be populated by JavaScript -->
 			</div>
 
+			<!-- Customer Details Form -->
+			<div class="customer-details-form" style="padding: 0 2.5rem 2rem;">
+				<h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: var(--color-dark);">Your Details</h3>
+				<div class="form-group" style="margin-bottom: 1rem;">
+					<label for="customerName" style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">Name</label>
+					<input type="text" id="customerName" placeholder="Enter your name" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; background: rgba(255,255,255,0.8); font-size: 1rem;">
+				</div>
+				<div class="form-group" style="margin-bottom: 1rem;">
+					<label for="customerPhone" style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">Phone Number</label>
+					<input type="tel" id="customerPhone" placeholder="e.g. 0123456789" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; background: rgba(255,255,255,0.8); font-size: 1rem;">
+				</div>
+				<!-- Honeypot field for spam protection -->
+				<input type="text" id="website_url" name="website_url" style="display:none !important;" tabindex="-1" autocomplete="off">
+			</div>
+
 			<div class="modal-actions">
 				<button class="btn-secondary" id="backToCartBtn">
 					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -3081,16 +3096,54 @@ const categories = [
 			updateCartCount();
 		}
 
+		// History State Management
+		function pushModalState(modalName) {
+			// Prevent pushing if already in that state
+			if (history.state && history.state.modal === modalName) return;
+			history.pushState({ modal: modalName }, '', `#${modalName}`);
+		}
+
+		window.addEventListener('popstate', (event) => {
+			// Reset all modals
+			cartSidebar.classList.remove('open');
+			cartOverlay.classList.remove('active');
+			orderModal.classList.remove('active');
+			paymentModal.classList.remove('active');
+			document.body.style.overflow = '';
+
+			// Restore state
+			if (event.state && event.state.modal) {
+				if (event.state.modal === 'cart') {
+					cartSidebar.classList.add('open');
+					cartOverlay.classList.add('active');
+					document.body.style.overflow = 'hidden';
+				} else if (event.state.modal === 'order') {
+					orderModal.classList.add('active');
+					document.body.style.overflow = 'hidden';
+				} else if (event.state.modal === 'payment') {
+					paymentModal.classList.add('active');
+					document.body.style.overflow = 'hidden';
+				}
+			}
+		});
+
 		function openCart() {
+			pushModalState('cart');
 			cartSidebar.classList.add('open');
 			cartOverlay.classList.add('active');
 			document.body.style.overflow = 'hidden';
 		}
 
 		function closeCart() {
+			// Instead of just hiding, we go back in history
+			// This triggers popstate, which hides the UI
+			history.back();
+		}
+
+		// Helper to just hide UI without history manipulation (for transitions)
+		function hideCartUI() {
 			cartSidebar.classList.remove('open');
 			cartOverlay.classList.remove('active');
-			document.body.style.overflow = '';
 		}
 
 		// Cart Functions
@@ -3250,42 +3303,98 @@ const categories = [
 			`;
 			
 			orderSummaryContent.innerHTML = summaryHTML;
+			pushModalState('order');
 			orderModal.classList.add('active');
-			closeCart();
+			hideCartUI();
 		});
 
 		closeModalBtn.addEventListener('click', () => {
-			orderModal.classList.remove('active');
+			history.back();
 		});
 
 		backToCartBtn.addEventListener('click', () => {
-			orderModal.classList.remove('active');
-			openCart();
+			history.back();
 		});
 
-		sendWhatsAppBtn.addEventListener('click', () => {
-			// Generate WhatsApp message
+		sendWhatsAppBtn.addEventListener('click', async () => {
+			const btn = sendWhatsAppBtn;
+			
+			// 1. Validation
+			const nameInput = document.getElementById('customerName');
+			const phoneInput = document.getElementById('customerPhone');
+			const honeypotInput = document.getElementById('website_url');
+			
+			const name = nameInput.value.trim();
+			const phone = phoneInput.value.trim();
+			
+			// Honeypot check
+			if (honeypotInput.value) {
+				console.log('Spam detected');
+				return;
+			}
+
+			if (!name || !phone) {
+				alert('Please enter your name and phone number');
+				return;
+			}
+
+			// Prevent double clicks
+			if (btn.disabled) return;
+			btn.disabled = true;
+			const originalBtnText = btn.innerHTML;
+			btn.innerHTML = '<span>Processing...</span>';
+
+			// 2. Send order to Akaunting (Backend) using sendBeacon for robustness
+			try {
+				const payload = {
+					items: cart,
+					customer: { name, phone }
+				};
+				
+				const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+				const success = navigator.sendBeacon('/api/create-order', blob);
+				
+				if (!success) {
+					// Fallback for older browsers or if sendBeacon fails (rare)
+					console.warn('sendBeacon failed, falling back to fetch');
+					fetch('/api/create-order', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify(payload)
+					}).catch(err => console.error('Failed to create Akaunting invoice:', err));
+				}
+			} catch (e) {
+				console.error(e);
+			}
+
+			// 3. Generate WhatsApp message
 			const orderDetails = cart.map(item => 
 				`${item.name} - ${item.quantity} pcs (${formatPrice(item.price * item.quantity)})`
 			).join('%0A');
 			
 			const total = formatPrice(calculateTotal());
-			const message = `🍪 *ZenCookies Order*%0A%0A${orderDetails}%0A%0A*Total: ${total}*%0A%0APlease confirm availability and provide payment details. Thank you!`;
+			const message = `🍪 *ZenCookies Order*%0A%0A*Customer:* ${name} (${phone})%0A%0A${orderDetails}%0A%0A*Total: ${total}*%0A%0APlease confirm availability and provide payment details. Thank you!`;
 			
 			const whatsappUrl = `https://wa.me/601131822616?text=${message}`;
 			
 			// Open payment modal
+			pushModalState('payment');
 			orderModal.classList.remove('active');
 			paymentModal.classList.add('active');
 			paymentAmount.textContent = total;
 			
+			// Reset button state after a delay (in case they come back)
+			setTimeout(() => {
+				btn.disabled = false;
+				btn.innerHTML = originalBtnText;
+			}, 2000);
+
 			// Open WhatsApp in new tab
 			window.open(whatsappUrl, '_blank');
 		});
 
 		closePaymentModalBtn.addEventListener('click', () => {
-			paymentModal.classList.remove('active');
-			document.body.style.overflow = '';
+			history.back();
 		});
 
 		sendPaymentProofBtn.addEventListener('click', () => {
@@ -3297,14 +3406,13 @@ const categories = [
 		// Close modals on overlay click
 		orderModal.addEventListener('click', (e) => {
 			if (e.target === orderModal) {
-				orderModal.classList.remove('active');
+				history.back();
 			}
 		});
 
 		paymentModal.addEventListener('click', (e) => {
 			if (e.target === paymentModal) {
-				paymentModal.classList.remove('active');
-				document.body.style.overflow = '';
+				history.back();
 			}
 		});
 
