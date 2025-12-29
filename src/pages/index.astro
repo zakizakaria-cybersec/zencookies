@@ -1,111 +1,59 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const cookies = [
+const categories = [
 	{
-		id: 1,
+		id: "original",
 		name: "Original",
-		description: "Classic cookie recipe with a perfect balance of sweetness",
-		price: 5.00,
-		image: "https://asset.jeki.uk/original.PNG"
+		badge: "Best Seller",
+		variations: [
+			{ id: 1, name: "Original", shortName: "Original", description: "Classic cookie recipe with a perfect balance of sweetness", price: 5.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Original.PNG&w=500&output=webp" },
+			{ id: 2, name: "Original Marshmallow", shortName: "Marshmallow", description: "Original cookie topped with gooey marshmallow", price: 6.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Original%20Marshmallow%20.PNG&w=500&output=webp" }
+		]
 	},
 	{
-		id: 2,
-		name: "Original Marsh",
-		description: "Original cookie topped with gooey marshmallow",
-		price: 6.00,
-		image: "https://asset.jeki.uk/original.PNG"
-	},
-	{
-		id: 3,
-		name: "Red Velvet",
-		description: "Rich red velvet cookie with a hint of cocoa",
-		price: 6.00,
-		image: "https://asset.jeki.uk/red%20velvet.PNG"
-	},
-	{
-		id: 4,
-		name: "Red Velvet Marsh",
-		description: "Red velvet cookie with fluffy marshmallow topping",
-		price: 7.00,
-		image: "https://asset.jeki.uk/red%20velvet.PNG"
-	},
-	{
-		id: 5,
-		name: "Red Velvet Cream Cheese",
-		description: "Red velvet cookie with creamy cream cheese frosting",
-		price: 7.00,
-		image: "https://asset.jeki.uk/red%20velvet.PNG"
-	},
-	{
-		id: 6,
-		name: "Smores",
-		description: "Graham cracker, chocolate, and marshmallow perfection",
-		price: 8.00,
-		image: "https://asset.jeki.uk/original.PNG"
-	},
-	{
-		id: 7,
+		id: "matcha",
 		name: "Matcha",
-		description: "Premium Japanese matcha green tea cookie",
-		price: 6.00,
-		image: "https://asset.jeki.uk/matcha.PNG"
+		variations: [
+			{ id: 7, name: "Matcha", shortName: "Matcha", description: "Premium Japanese matcha green tea cookie", price: 6.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Matcha.PNG&w=500&output=webp" },
+			{ id: 9, name: "Matcha Marshmallow", shortName: "Marshmallow", description: "Matcha cookie topped with sweet marshmallow", price: 7.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Matcha%20Marshmallow.PNG&w=500&output=webp" },
+			{ id: 8, name: "Matcha Cream Cheese", shortName: "Cream Cheese", description: "Matcha cookie with smooth cream cheese frosting", price: 7.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Matcha%20Creamcheese.PNG&w=500&output=webp" }
+		]
 	},
 	{
-		id: 8,
-		name: "Matcha Cream Cheese",
-		description: "Matcha cookie with smooth cream cheese frosting",
-		price: 7.00,
-		image: "https://asset.jeki.uk/matcha.PNG"
+		id: "red-velvet",
+		name: "Red Velvet",
+		badge: "Signature",
+		variations: [
+			{ id: 3, name: "Red Velvet", shortName: "Red Velvet", description: "Rich red velvet cookie with a hint of cocoa", price: 6.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Red%20Velvet.PNG&w=500&output=webp" },
+			{ id: 4, name: "Red Velvet Marshmallow", shortName: "Marshmallow", description: "Red velvet cookie with fluffy marshmallow topping", price: 7.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Red%20Velvet%20Marshmallow.PNG&w=500&output=webp" },
+			{ id: 5, name: "Red Velvet Cream Cheese", shortName: "Cream Cheese", description: "Red velvet cookie with creamy cream cheese frosting", price: 7.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Red%20Velvet%20Creamcheese.PNG&w=500&output=webp" }
+		]
 	},
 	{
-		id: 9,
-		name: "Matcha Marshmallow",
-		description: "Matcha cookie topped with sweet marshmallow",
-		price: 7.00,
-		image: "https://asset.jeki.uk/matcha.PNG"
-	},
-	{
-		id: 10,
+		id: "chocolate",
 		name: "Chocolate",
-		description: "Rich, decadent chocolate cookie for chocolate lovers",
-		price: 6.00,
-		image: "https://asset.jeki.uk/original.PNG"
+		variations: [
+			{ id: 10, name: "Chocolate", shortName: "Chocolate", description: "Rich, decadent chocolate cookie for chocolate lovers", price: 6.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Chocolate.PNG&w=500&output=webp" },
+			{ id: 11, name: "Chocolate Marshmallow", shortName: "Marshmallow", description: "Chocolate cookie with fluffy marshmallow topping", price: 7.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Chocolate%20Marshmallow.PNG&w=500&output=webp" },
+			{ id: 12, name: "Chocolate Cream Cheese", shortName: "Cream Cheese", description: "Chocolate cookie with velvety cream cheese frosting", price: 7.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Chocolate%20Creamcheese.PNG&w=500&output=webp" },
+			{ id: 14, name: "Biscoff White Chocolate", shortName: "Biscoff White Choc", description: "Classic cookie loaded with crunchy Biscoff speculoos", price: 8.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Biscoff%20White%20Chocolate.PNG&w=500&output=webp" }
+		]
 	},
 	{
-		id: 11,
-		name: "Chocolate Marshmallow",
-		description: "Chocolate cookie with fluffy marshmallow topping",
-		price: 7.00,
-		image: "https://asset.jeki.uk/original.PNG"
+		id: "smores",
+		name: "Smores",
+		variations: [
+			{ id: 6, name: "Smores", shortName: "Smores", description: "Graham cracker, chocolate, and marshmallow perfection", price: 8.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Smores.PNG&w=500&output=webp" }
+		]
 	},
 	{
-		id: 12,
-		name: "Chocolate Cream Cheese",
-		description: "Chocolate cookie with velvety cream cheese frosting",
-		price: 7.00,
-		image: "https://asset.jeki.uk/original.PNG"
-	},
-	{
-		id: 13,
-		name: "Cheesekut Biscoff",
-		description: "Creamy cheesecake cookie with caramelized Biscoff spread",
-		price: 14.00,
-		image: "https://asset.jeki.uk/original.PNG"
-	},
-	{
-		id: 14,
-		name: "Cookies Biscoff",
-		description: "Classic cookie loaded with crunchy Biscoff speculoos",
-		price: 8.00,
-		image: "https://asset.jeki.uk/original.PNG"
-	},
-	{
-		id: 15,
-		name: "Cheesekut Oreo",
-		description: "Creamy cheesecake cookie with crushed Oreo pieces",
-		price: 14.00,
-		image: "https://asset.jeki.uk/original.PNG"
+		id: "cheesekut",
+		name: "Cheesekut",
+		variations: [
+			{ id: 13, name: "Biscoff Cheesekut", shortName: "Biscoff", description: "Creamy cheesecake cookie with caramelized Biscoff spread", price: 14.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Biscoff%20Cheesekut.PNG&w=500&output=webp" },
+			{ id: 15, name: "Oreo Cheesekut", shortName: "Oreo", description: "Creamy cheesecake cookie with crushed Oreo pieces", price: 14.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Oreo%20Cheesekut.PNG&w=500&output=webp" }
+		]
 	}
 ];
 ---
@@ -194,51 +142,102 @@ const cookies = [
 			<p class="section-subtitle">Sesuai untuk majlis kahwin, kenduri, hari jadi, dan acara korporat di Johor. Setiap cookies dibuat dengan penuh kasih sayang menggunakan bahan premium.</p>
 		</div>
 		<div class="cookies-grid">
-			{cookies.map((cookie, index) => (
-				<div class="cookie-card reveal" style={`animation-delay: ${index * 0.1}s`} data-cookie-id={cookie.id}>
-					<div class="card-shine"></div>
-					<div class="cookie-icon-wrapper">
-						<img src={cookie.image} alt={cookie.name} class="cookie-image" loading="lazy" />
-					</div>
-					<h3>{cookie.name}</h3>
-					<p class="cookie-description">{cookie.description}</p>
-					<div class="cookie-footer">
-						<span class="price">RM {cookie.price.toFixed(2)}</span>
-						<span class="per-dozen">per piece</span>
+			{categories.map((category, index) => (
+				<div class="cookie-card reveal category-card" style={`animation-delay: ${index * 0.1}s`} id={`category-${category.id}`}>
+					<div class="cookie-bg-image-wrapper">
+						<img 
+							src={category.variations[0].image} 
+							alt={category.name} 
+							class="cookie-bg-image" 
+							id={`img-${category.id}`}
+							loading="lazy"
+						/>
+						<div class="cookie-overlay"></div>
 					</div>
 					
-					<!-- Quantity Selector -->
-					<div class="quantity-selector">
-						<button class="qty-btn qty-minus" data-cookie-id={cookie.id} aria-label="Decrease quantity">
-							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<line x1="5" y1="12" x2="19" y2="12"/>
-							</svg>
-						</button>
-						<input 
-							type="number" 
-							class="qty-input" 
-							data-cookie-id={cookie.id}
-							min="0" 
-							max="99" 
-							value="0"
-							aria-label="Quantity"
-						/>
-						<button class="qty-btn qty-plus" data-cookie-id={cookie.id} aria-label="Increase quantity">
-							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<line x1="12" y1="5" x2="12" y2="19"/>
-								<line x1="5" y1="12" x2="19" y2="12"/>
-							</svg>
-						</button>
-					</div>
+					<div class="cookie-content-overlay">
+						<div class="cookie-header">
+							<h3 class="cookie-title">{category.name}</h3>
+							<p class="cookie-description" id={`desc-${category.id}`}>{category.variations[0].description}</p>
+						</div>
+						
+						<div class="cookie-actions">
+							<div class="variations-container">
+								{category.badge && (
+									<div class="cookie-indicator">
+										{category.badge === "Best Seller" ? (
+											<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+												<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+											</svg>
+										) : category.badge === "Signature" ? (
+											<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+												<path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"></path>
+												<line x1="6" y1="17" x2="18" y2="17"></line>
+											</svg>
+										) : null}
+										<span>{category.badge}</span>
+									</div>
+								)}
+								<div class="select-wrapper">
+									<select 
+										class="variation-select" 
+										id={`variation-select-${category.id}`}
+										data-category={category.id}
+									>
+										{category.variations.map((variation, vIndex) => (
+											<option 
+												value={variation.id}
+												data-name={variation.name}
+												data-price={variation.price}
+												data-desc={variation.description}
+												data-image={variation.image}
+												selected={vIndex === 0}
+											>
+												{variation.shortName} • RM {variation.price.toFixed(2)}
+											</option>
+										))}
+									</select>
+									<svg class="select-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<path d="M6 9l6 6 6-6"/>
+									</svg>
+								</div>
+							</div>
 
-					<button class="add-to-cart-btn" data-cookie-id={cookie.id} data-cookie-name={cookie.name} data-cookie-price={cookie.price} data-cookie-image={cookie.image}>
-						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<circle cx="9" cy="21" r="1"/>
-							<circle cx="20" cy="21" r="1"/>
-							<path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-						</svg>
-						<span>Add to Cart</span>
-					</button>
+							<div class="actions-stack">
+								<div class="action-capsule">
+									<button class="capsule-btn qty-minus" data-category={category.id} aria-label="Decrease quantity">
+										<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+											<line x1="5" y1="12" x2="19" y2="12"/>
+										</svg>
+									</button>
+									
+									<button 
+										class="capsule-add-btn" 
+										id={`add-btn-${category.id}`}
+										data-category={category.id}
+										data-cookie-id={category.variations[0].id} 
+										data-cookie-name={category.variations[0].name} 
+										data-cookie-price={category.variations[0].price} 
+										data-cookie-image={category.variations[0].image}
+									>
+										<span id={`btn-text-${category.id}`}>Add to Cart</span>
+									</button>
+
+									<button class="capsule-btn qty-plus" data-category={category.id} aria-label="Increase quantity">
+										<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+											<line x1="12" y1="5" x2="12" y2="19"/>
+											<line x1="5" y1="12" x2="19" y2="12"/>
+										</svg>
+									</button>
+								</div>
+								<input 
+									type="hidden" 
+									id={`qty-${category.id}`}
+									value="0"
+								/>
+							</div>
+						</div>
+					</div>
 				</div>
 			))}
 		</div>
@@ -1141,105 +1140,230 @@ const cookies = [
 		}
 
 		.cookie-card {
-			background: rgba(255, 255, 255, 0.6);
-			backdrop-filter: blur(20px);
-			padding: 3rem 2rem;
-			border-radius: 30px;
-			box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
-			transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-			text-align: center;
 			position: relative;
+			height: 550px;
+			border-radius: 30px;
 			overflow: hidden;
-			border: 1px solid rgba(255, 255, 255, 0.5);
-		}
-
-		.card-shine {
-			position: absolute;
-			top: -50%;
-			left: -50%;
-			width: 200%;
-			height: 200%;
-			background: linear-gradient(
-				45deg,
-				transparent 30%,
-				rgba(255, 255, 255, 0.8) 50%,
-				transparent 70%
-			);
-			transform: rotate(45deg);
-			transition: all 0.6s ease;
-			opacity: 0;
-		}
-
-		.cookie-card:hover .card-shine {
-			opacity: 1;
-			left: 100%;
+			padding: 0;
+			background: #000;
+			border: none;
+			box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+			transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 		}
 
 		.cookie-card:hover {
 			transform: translateY(-10px);
-			box-shadow: 0 20px 60px rgba(255, 20, 147, 0.1);
-			border-color: rgba(255, 20, 147, 0.2);
-			background: rgba(255, 255, 255, 0.8);
+			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
 		}
 
-		.cookie-icon-wrapper {
-			margin: -3rem -2rem 2rem -2rem;
-			position: relative;
-			width: calc(100% + 4rem);
-			height: 250px;
-			overflow: hidden;
-			background: linear-gradient(135deg, rgba(255, 208, 215, 0.3), rgba(255, 240, 245, 0.5));
+		.cookie-indicator {
+			display: flex;
+			align-items: center;
+			gap: 0.4rem;
+			margin-bottom: 0.5rem;
+			padding-left: 0.2rem;
+			animation: fadeIn 0.5s ease-out;
 		}
 
-		.cookie-image {
+		.cookie-indicator span {
+			color: #FFD700;
+			font-size: 0.75rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+		}
+
+		.cookie-indicator svg {
+			filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+		}
+
+		.cookie-bg-image-wrapper {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 1;
+		}
+
+		.cookie-bg-image {
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
-			transition: all 0.4s ease;
+			transition: transform 0.7s ease;
 		}
 
-		.cookie-card:hover .cookie-image {
+		.cookie-card:hover .cookie-bg-image {
 			transform: scale(1.1);
 		}
 
-		.cookie-card h3 {
-			font-size: 1.4rem;
-			color: var(--color-dark);
-			margin-bottom: 0.5rem;
-			transition: color 0.3s ease;
-			font-weight: 700;
+		.cookie-overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.1) 100%);
+			z-index: 2;
+			transition: background 0.3s ease;
+		}
+		
+		.cookie-card:hover .cookie-overlay {
+			background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.2) 100%);
 		}
 
-		.cookie-card:hover h3 {
-			color: var(--color-primary-dark);
+		.cookie-content-overlay {
+			position: relative;
+			z-index: 3;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			padding: 1.5rem;
+			color: white;
+		}
+
+		.cookie-header {
+			margin-bottom: auto;
+			padding-top: 2rem;
+			transform: translateY(0);
+			transition: transform 0.3s ease;
+		}
+
+		.cookie-title {
+			color: white !important;
+			font-size: 2rem !important;
+			margin-bottom: 0.5rem;
+			text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+			font-weight: 800;
 		}
 
 		.cookie-description {
-			color: #666;
-			margin-bottom: 2rem;
-			line-height: 1.6;
-			font-size: 0.9rem;
+			color: rgba(255, 255, 255, 0.9) !important;
+			font-size: 1rem;
+			margin-bottom: 1rem;
+			text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+			line-height: 1.5;
+			display: -webkit-box;
+			-webkit-line-clamp: 3;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
 		}
 
-		.cookie-footer {
+		.cookie-actions {
+			transform: translateY(0);
+			transition: transform 0.3s ease;
+		}
+
+		.variations-container {
+			margin-bottom: 1rem;
+		}
+		
+		.variations-pills {
 			display: flex;
-			align-items: baseline;
-			justify-content: center;
+			flex-wrap: wrap;
 			gap: 0.5rem;
-			margin-bottom: 1.5rem;
 		}
 
-		.price {
-			font-size: 1.8rem;
-			font-weight: 800;
+		.variation-pill {
+			padding: 0.4rem 1rem;
+			border-radius: 20px;
+			font-size: 0.85rem;
+			font-weight: 500;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			background: rgba(255, 255, 255, 0.2);
+			color: white;
+			border: 1px solid rgba(255, 255, 255, 0.3);
+			backdrop-filter: blur(4px);
+		}
+
+		.variation-pill:hover {
+			background: rgba(255, 255, 255, 0.3);
+		}
+
+		.variation-pill.active {
+			background: white;
 			color: var(--color-dark);
+			border-color: white;
+			font-weight: 700;
 		}
 
-		.per-dozen {
-			font-size: 0.8rem;
-			color: #999;
-			text-transform: uppercase;
-			letter-spacing: 0.05em;
+		.actions-stack {
+			margin-top: auto;
+		}
+
+		.action-capsule {
+			display: flex;
+			align-items: center;
+			background: rgba(255, 255, 255, 0.95);
+			border-radius: 15px;
+			padding: 4px;
+			box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+			transition: transform 0.2s;
+			width: 100%;
+		}
+
+		.action-capsule:hover {
+			transform: scale(1.02);
+		}
+
+		.capsule-btn {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			border: none;
+			background: transparent;
+			color: var(--color-dark);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			transition: background 0.2s;
+		}
+
+		.capsule-btn:hover {
+			background: rgba(0,0,0,0.05);
+		}
+
+		.capsule-add-btn {
+			flex: 1;
+			height: 40px;
+			border: none;
+			background: transparent;
+			color: var(--color-dark);
+			font-weight: 700;
+			font-size: 0.95rem;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			white-space: nowrap;
+		}
+
+		.quantity-selector-full {
+			display: none;
+		}
+
+		.add-to-cart-btn-full {
+			display: none;
+		}
+
+		.cookie-footer-row {
+			display: none;
+		}
+		
+		.action-group {
+			display: none;
+		}
+
+		.quantity-selector {
+			display: none;
+		}
+
+		.add-to-cart-btn {
+			display: none;
 		}
 
 		.order-btn {
@@ -1711,8 +1835,8 @@ const cookies = [
 			font-weight: 600;
 			font-size: 0.9rem;
 			transition: all 0.3s ease;
-			opacity: 0;
-			transform: translateY(10px);
+			opacity: 1;
+			transform: translateY(0);
 			width: 100%;
 			justify-content: center;
 			box-shadow: 0 4px 15px rgba(255, 20, 147, 0.2);
@@ -2420,7 +2544,14 @@ const cookies = [
 			}
 
 			.nav-links {
-				gap: 1.5rem;
+				gap: 1rem;
+			}
+
+			/* Hide less important links on mobile to prevent overcrowding */
+			.nav-links li:nth-child(2),
+			.nav-links li:nth-child(3),
+			.nav-links li:nth-child(4) {
+				display: none;
 			}
 
 			.nav-links a {
@@ -2428,7 +2559,7 @@ const cookies = [
 			}
 
 			.hero {
-				padding: 8rem 1rem 4rem;
+				padding: 12rem 1rem 4rem;
 			}
 
 			.hero-content {
@@ -2551,7 +2682,7 @@ const cookies = [
 			}
 
 			.hero {
-				padding: 7rem 1rem 3rem;
+				padding: 11rem 1rem 3rem;
 			}
 
 			.hero-badge {
@@ -2697,24 +2828,119 @@ const cookies = [
 			font-size: 0.95rem;
 			line-height: 1.6;
 		}
+
+		/* Variations */
+		.variations-container {
+			margin: 1rem 0;
+			width: 100%;
+		}
+
+		.select-wrapper {
+			position: relative;
+			width: 100%;
+		}
+
+		.variation-select {
+			width: 100%;
+			appearance: none;
+			-webkit-appearance: none;
+			background: rgba(255, 255, 255, 0.2);
+			border: 1px solid rgba(255, 255, 255, 0.3);
+			border-radius: 15px;
+			padding: 0.8rem 1rem;
+			font-size: 0.95rem;
+			color: white;
+			cursor: pointer;
+			backdrop-filter: blur(4px);
+			font-family: var(--font-body);
+			font-weight: 500;
+			transition: all 0.3s ease;
+		}
+
+		.variation-select:hover, .variation-select:focus {
+			background: rgba(255, 255, 255, 0.3);
+			outline: none;
+			border-color: rgba(255, 255, 255, 0.5);
+		}
+
+		.variation-select option {
+			background: #333;
+			color: white;
+			padding: 10px;
+		}
+
+		.select-arrow {
+			position: absolute;
+			right: 1rem;
+			top: 50%;
+			transform: translateY(-50%);
+			pointer-events: none;
+			color: white;
+		}
 	</style>
 
 	<script>
 		// Cookie data - must match the server-side data
 		const cookiesData = [
-			{ id: 1, name: "Original", price: 5.00, image: "🍪" },
-			{ id: 2, name: "Original Marsh", price: 6.00, image: "🍪" },
-			{ id: 3, name: "Red Velvet", price: 6.00, image: "❤️" },
-			{ id: 4, name: "Red Velvet Marsh", price: 7.00, image: "❤️" },
-			{ id: 5, name: "Red Velvet Cream Cheese", price: 7.00, image: "❤️" },
-			{ id: 6, name: "Smores", price: 8.00, image: "🔥" },
-			{ id: 7, name: "Matcha", price: 6.00, image: "🍵" },
-			{ id: 8, name: "Matcha Cream Cheese", price: 7.00, image: "🍵" },
-			{ id: 9, name: "Matcha Marshmallow", price: 7.00, image: "🍵" },
-			{ id: 10, name: "Chocolate", price: 6.00, image: "🍫" },
-			{ id: 11, name: "Chocolate Marshmallow", price: 7.00, image: "🍫" },
-			{ id: 12, name: "Chocolate Cream Cheese", price: 7.00, image: "🍫" }
+			{ id: 1, name: "Original", price: 5.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Original.PNG&w=500&output=webp" },
+			{ id: 2, name: "Original Marshmallow", price: 6.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Original%20Marshmallow%20.PNG&w=500&output=webp" },
+			{ id: 3, name: "Red Velvet", price: 6.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Red%20Velvet.PNG&w=500&output=webp" },
+			{ id: 4, name: "Red Velvet Marshmallow", price: 7.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Red%20Velvet%20Marshmallow.PNG&w=500&output=webp" },
+			{ id: 5, name: "Red Velvet Cream Cheese", price: 7.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Red%20Velvet%20Creamcheese.PNG&w=500&output=webp" },
+			{ id: 6, name: "Smores", price: 8.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Smores.PNG&w=500&output=webp" },
+			{ id: 7, name: "Matcha", price: 6.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Matcha.PNG&w=500&output=webp" },
+			{ id: 8, name: "Matcha Cream Cheese", price: 7.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Matcha%20Creamcheese.PNG&w=500&output=webp" },
+			{ id: 9, name: "Matcha Marshmallow", price: 7.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Matcha%20Marshmallow.PNG&w=500&output=webp" },
+			{ id: 10, name: "Chocolate", price: 6.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Chocolate.PNG&w=500&output=webp" },
+			{ id: 11, name: "Chocolate Marshmallow", price: 7.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Chocolate%20Marshmallow.PNG&w=500&output=webp" },
+			{ id: 12, name: "Chocolate Cream Cheese", price: 7.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Chocolate%20Creamcheese.PNG&w=500&output=webp" },
+			{ id: 13, name: "Biscoff Cheesekut", price: 14.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Biscoff%20Cheesekut.PNG&w=500&output=webp" },
+			{ id: 14, name: "Biscoff White Chocolate", price: 8.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Biscoff%20White%20Chocolate.PNG&w=500&output=webp" },
+			{ id: 15, name: "Oreo Cheesekut", price: 14.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Oreo%20Cheesekut.PNG&w=500&output=webp" }
 		];
+
+		// Variation Selection
+		function handleVariationChange(selectElement) {
+			const selectedOption = selectElement.options[selectElement.selectedIndex];
+			const categoryId = selectElement.dataset.category;
+			const id = selectedOption.value;
+			const name = selectedOption.dataset.name;
+			const price = parseFloat(selectedOption.dataset.price);
+			const desc = selectedOption.dataset.desc;
+			const image = selectedOption.dataset.image;
+
+			// Update UI
+			const imgEl = document.getElementById(`img-${categoryId}`);
+			const descEl = document.getElementById(`desc-${categoryId}`);
+			const priceEl = document.getElementById(`price-${categoryId}`);
+			
+			if (imgEl) imgEl.src = image;
+			if (descEl) descEl.textContent = desc;
+			if (priceEl) priceEl.textContent = `RM ${price.toFixed(2)}`;
+			
+			// Update Add to Cart button
+			const addBtn = document.getElementById(`add-btn-${categoryId}`);
+			if (addBtn) {
+				addBtn.dataset.cookieId = id;
+				addBtn.dataset.cookieName = name;
+				addBtn.dataset.cookiePrice = price;
+				addBtn.dataset.cookieImage = image;
+				
+				// Reset quantity and text when variation changes
+				const input = document.getElementById(`qty-${categoryId}`);
+				if (input) {
+					input.value = 0;
+					updateCapsuleText(categoryId);
+				}
+			}
+		}
+
+		// Event Delegation for dynamic elements
+		document.addEventListener('change', (e) => {
+			if (e.target.classList.contains('variation-select')) {
+				handleVariationChange(e.target);
+			}
+		});
 
 		// Shopping cart state
 		let cart = [];
@@ -2770,7 +2996,7 @@ const cookies = [
 				
 				cartItems.innerHTML = cart.map(item => `
 					<div class="cart-item" data-item-id="${item.id}">
-						<div class="cart-item-icon">${item.image}</div>
+						<div class="cart-item-icon">🍪</div>
 						<div class="cart-item-details">
 							<div class="cart-item-name">${item.name}</div>
 							<div class="cart-item-price">${formatPrice(item.price)} each</div>
@@ -2834,46 +3060,91 @@ const cookies = [
 			openCart();
 
 			// Visual feedback
-			const btn = document.querySelector(`.add-to-cart-btn[data-cookie-id="${cookieId}"]`);
+			const btn = document.querySelector(`.capsule-add-btn[data-cookie-id="${cookieId}"]`);
 			if (btn) {
-				btn.classList.add('added');
-				setTimeout(() => btn.classList.remove('added'), 1000);
+				const originalText = btn.querySelector('span').textContent;
+				btn.querySelector('span').textContent = "Added!";
+				setTimeout(() => {
+					// The text will be reset by the updateCapsuleText call in the click handler
+					// But just in case:
+					// btn.querySelector('span').textContent = originalText; 
+				}, 1000);
 			}
 		}
 
 		// Quantity Controls
 		document.addEventListener('click', (e) => {
+			// Handle Minus
 			if (e.target.closest('.qty-minus')) {
-				const cookieId = parseInt(e.target.closest('.qty-minus').dataset.cookieId);
-				const input = document.querySelector(`.qty-input[data-cookie-id="${cookieId}"]`);
-				const currentValue = parseInt(input.value) || 0;
-				if (currentValue > 0) {
-					input.value = currentValue - 1;
+				const btn = e.target.closest('.qty-minus');
+				const categoryId = btn.dataset.category;
+				const input = document.getElementById(`qty-${categoryId}`);
+				if (input) {
+					const currentValue = parseInt(input.value) || 0;
+					if (currentValue > 0) {
+						input.value = currentValue - 1;
+						updateCapsuleText(categoryId);
+					}
 				}
 			}
 
+			// Handle Plus
 			if (e.target.closest('.qty-plus')) {
-				const cookieId = parseInt(e.target.closest('.qty-plus').dataset.cookieId);
-				const input = document.querySelector(`.qty-input[data-cookie-id="${cookieId}"]`);
-				const currentValue = parseInt(input.value) || 0;
-				if (currentValue < 99) {
-					input.value = currentValue + 1;
+				const btn = e.target.closest('.qty-plus');
+				const categoryId = btn.dataset.category;
+				const input = document.getElementById(`qty-${categoryId}`);
+				if (input) {
+					const currentValue = parseInt(input.value) || 0;
+					if (currentValue < 99) {
+						input.value = currentValue + 1;
+						updateCapsuleText(categoryId);
+					}
 				}
 			}
 
-			if (e.target.closest('.add-to-cart-btn')) {
-				const btn = e.target.closest('.add-to-cart-btn');
+			// Handle Add Button Click
+			if (e.target.closest('.capsule-add-btn')) {
+				const btn = e.target.closest('.capsule-add-btn');
 				const cookieId = parseInt(btn.dataset.cookieId);
-				const input = document.querySelector(`.qty-input[data-cookie-id="${cookieId}"]`);
-				const quantity = parseInt(input.value) || 0;
+				const categoryId = btn.dataset.category;
+				const input = document.getElementById(`qty-${categoryId}`);
+				let quantity = parseInt(input.value) || 0;
 				
-				if (quantity > 0) {
-					addToCart(cookieId, quantity);
-				} else {
-					alert('Please select a quantity first!');
+				// If quantity is 0, treat as "Add 1"
+				if (quantity === 0) {
+					quantity = 1;
+					input.value = 1;
+					updateCapsuleText(categoryId);
 				}
+				
+				addToCart(cookieId, quantity);
+				
+				// Reset after adding? Optional. Let's keep it for now or reset to 0.
+				// For better UX, maybe reset to 0 to show "Add to Cart" again?
+				// Or keep it to allow adding more? Let's reset to 0 for "fresh" state.
+				setTimeout(() => {
+					input.value = 0;
+					updateCapsuleText(categoryId);
+				}, 1000);
 			}
 		});
+
+		function updateCapsuleText(categoryId) {
+			const input = document.getElementById(`qty-${categoryId}`);
+			const btnText = document.getElementById(`btn-text-${categoryId}`);
+			const addBtn = document.getElementById(`add-btn-${categoryId}`);
+			const quantity = parseInt(input.value) || 0;
+			const price = parseFloat(addBtn.dataset.cookiePrice) || 0;
+
+			if (quantity === 0) {
+				btnText.textContent = "Add to Cart";
+				addBtn.style.color = "var(--color-dark)";
+			} else {
+				const total = (quantity * price).toFixed(2);
+				btnText.textContent = `Add ${quantity} • RM ${total}`;
+				addBtn.style.color = "var(--color-primary-dark)";
+			}
+		}
 
 		// Cart UI Controls
 		cartButton.addEventListener('click', openCart);
@@ -2889,7 +3160,7 @@ const cookies = [
 				${cart.map(item => `
 					<div class="summary-item">
 						<div class="summary-item-info">
-							<div class="summary-item-icon">${item.image}</div>
+							<div class="summary-item-icon">🍪</div>
 							<div class="summary-item-details">
 								<h4>${item.name}</h4>
 								<div class="summary-item-meta">${formatPrice(item.price)} × ${item.quantity}</div>

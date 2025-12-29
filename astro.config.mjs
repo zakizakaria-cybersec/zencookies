@@ -4,6 +4,6 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://zencookies.com',
+  site: 'https://zencookies.pages.dev',
   integrations: [sitemap()],
 });

@@ -21,12 +21,12 @@ const { title, description = "Beli cookies sedap di Johor untuk majlis kahwin, k
 		<meta name="keywords" content="beli cookies johor, door gift kahwin johor, cookies majlis kahwin, hantaran cookies, cookies untuk kenduri, door gift murah johor, cookies johor bahru, cookies iskandar puteri, cookies kulai, cookies senai, cookies skudai, cookies pasir gudang, acara korporat johor, cookies halal johor, cookies premium johor, bakery johor, zencookies, cookies untuk majlis, door gift premium, wedding cookies johor, cookies sedap johor, tempah cookies johor" />
 		<meta name="author" content="ZenCookies - Pakar Cookies Johor" />
 		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-		<link rel="canonical" href="https://zencookies.com" />
+		<link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
 
 		<!-- Alternate Language Tags -->
-		<link rel="alternate" hreflang="ms-MY" href="https://zencookies.com" />
-		<link rel="alternate" hreflang="en-MY" href="https://zencookies.com" />
-		<link rel="alternate" hreflang="x-default" href="https://zencookies.com" />
+		<link rel="alternate" hreflang="ms-MY" href={new URL(Astro.url.pathname, Astro.site)} />
+		<link rel="alternate" hreflang="en-MY" href={new URL(Astro.url.pathname, Astro.site)} />
+		<link rel="alternate" hreflang="x-default" href={new URL(Astro.url.pathname, Astro.site)} />
 
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
