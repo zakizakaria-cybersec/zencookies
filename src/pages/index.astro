@@ -576,19 +576,19 @@ const categories = [
 			</div>
 
 			<!-- Customer Details Form -->
-			<div class="customer-details-form" style="padding: 0 2.5rem 2rem;">
+			<form class="customer-details-form" id="customerForm" style="padding: 0 2.5rem 2rem;" onsubmit="event.preventDefault();">
 				<h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: var(--color-dark);">Your Details</h3>
 				<div class="form-group" style="margin-bottom: 1rem;">
-					<label for="customerName" style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">Name</label>
-					<input type="text" id="customerName" placeholder="Enter your name" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; background: rgba(255,255,255,0.8); font-size: 1rem;">
+					<label for="customerName" style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">Name <span style="color: red">*</span></label>
+					<input type="text" id="customerName" required placeholder="Enter your name" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; background: rgba(255,255,255,0.8); font-size: 1rem;">
 				</div>
 				<div class="form-group" style="margin-bottom: 1rem;">
-					<label for="customerPhone" style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">Phone Number</label>
-					<input type="tel" id="customerPhone" placeholder="e.g. 0123456789" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; background: rgba(255,255,255,0.8); font-size: 1rem;">
+					<label for="customerPhone" style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">Phone Number <span style="color: red">*</span></label>
+					<input type="tel" id="customerPhone" required placeholder="e.g. 0123456789" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; background: rgba(255,255,255,0.8); font-size: 1rem;">
 				</div>
 				<!-- Honeypot field for spam protection -->
 				<input type="text" id="website_url" name="website_url" style="display:none !important;" tabindex="-1" autocomplete="off">
-			</div>
+			</form>
 
 			<div class="modal-actions">
 				<button class="btn-secondary" id="backToCartBtn">
@@ -2961,6 +2961,17 @@ const categories = [
 			pointer-events: none;
 			color: white;
 		}
+
+		.shake {
+			animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+		}
+
+		@keyframes shake {
+			10%, 90% { transform: translate3d(-1px, 0, 0); }
+			20%, 80% { transform: translate3d(2px, 0, 0); }
+			30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+			40%, 60% { transform: translate3d(4px, 0, 0); }
+		}
 	</style>
 
 	<script>
@@ -2978,9 +2989,9 @@ const categories = [
 			{ id: 10, name: "Chocolate", price: 6.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Chocolate.PNG&w=500&output=webp" },
 			{ id: 11, name: "Chocolate Marshmallow", price: 7.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Chocolate%20Marshmallow.PNG&w=500&output=webp" },
 			{ id: 12, name: "Chocolate Cream Cheese", price: 7.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Chocolate%20Creamcheese.PNG&w=500&output=webp" },
-			{ id: 13, name: "Biscoff Cheesekut", price: 14.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Biscoff%20Cheesekut.PNG&w=500&output=webp" },
+			{ id: 13, name: "Biscoff Cheesekut", price: 8.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Biscoff%20Cheesekut.PNG&w=500&output=webp" },
 			{ id: 14, name: "Biscoff White Chocolate", price: 8.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Biscoff%20White%20Chocolate.PNG&w=500&output=webp" },
-			{ id: 15, name: "Oreo Cheesekut", price: 14.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Oreo%20Cheesekut.PNG&w=500&output=webp" }
+			{ id: 15, name: "Oreo Cheesekut", price: 7.00, image: "https://wsrv.nl/?url=https://asset.jeki.uk/Zencookies/Oreo%20Cheesekut.PNG&w=500&output=webp" }
 		];
 
 		// Variation Selection
@@ -3322,12 +3333,10 @@ const categories = [
 			const btn = sendWhatsAppBtn;
 			
 			// 1. Validation
+			const form = document.getElementById('customerForm');
 			const nameInput = document.getElementById('customerName');
 			const phoneInput = document.getElementById('customerPhone');
 			const honeypotInput = document.getElementById('website_url');
-			
-			const name = nameInput.value.trim();
-			const phone = phoneInput.value.trim();
 			
 			// Honeypot check
 			if (honeypotInput.value) {
@@ -3335,8 +3344,21 @@ const categories = [
 				return;
 			}
 
+			// Native browser validation
+			if (!form.checkValidity()) {
+				form.reportValidity();
+				// Visual feedback
+				form.classList.add('shake');
+				setTimeout(() => form.classList.remove('shake'), 500);
+				return;
+			}
+
+			const name = nameInput.value.trim();
+			const phone = phoneInput.value.trim();
+
 			if (!name || !phone) {
-				alert('Please enter your name and phone number');
+				// Fallback if browser validation passes but values are empty (e.g. spaces)
+				alert('Please enter your name and phone number.');
 				return;
 			}
 
@@ -3346,25 +3368,32 @@ const categories = [
 			const originalBtnText = btn.innerHTML;
 			btn.innerHTML = '<span>Processing...</span>';
 
-			// 2. Send order to Akaunting (Backend) using sendBeacon for robustness
+			// 2. Send order to Akaunting (Backend)
+			// Use fetch with keepalive: true instead of sendBeacon for better JSON support
 			try {
 				const payload = {
 					items: cart,
 					customer: { name, phone }
 				};
 				
-				const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
-				const success = navigator.sendBeacon('/api/create-order', blob);
-				
-				if (!success) {
-					// Fallback for older browsers or if sendBeacon fails (rare)
-					console.warn('sendBeacon failed, falling back to fetch');
-					fetch('/api/create-order', {
-						method: 'POST',
-						headers: { 'Content-Type': 'application/json' },
-						body: JSON.stringify(payload)
-					}).catch(err => console.error('Failed to create Akaunting invoice:', err));
-				}
+				// Non-blocking fetch, but we want to know if it fails for debugging
+				fetch('/api/create-order', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(payload),
+					keepalive: true
+				}).then(async res => {
+					if (!res.ok) {
+						const errText = await res.text();
+						console.error('Order creation failed:', res.status, errText);
+						alert(`Debug: Order failed to save to Akaunting. Error ${res.status}: ${errText}`);
+					} else {
+						console.log('Order saved to Akaunting successfully');
+					}
+				}).catch(err => {
+					console.error('Failed to create Akaunting invoice:', err);
+					alert('Debug: Network error saving order to Akaunting: ' + err.message);
+				});
 			} catch (e) {
 				console.error(e);
 			}
