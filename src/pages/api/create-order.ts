@@ -33,10 +33,14 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
-    // Send to Akaunting
-    const invoice = await createAkauntingInvoice(items, customer, locals);
+    // Akaunting webhook temporarily disabled
+    // const invoice = await createAkauntingInvoice(items, customer, locals);
 
-    return new Response(JSON.stringify({ success: true, invoice }), {
+    return new Response(JSON.stringify({
+      success: true,
+      message: 'Order received. Akaunting webhook is currently disabled.',
+      invoice: null
+    }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
