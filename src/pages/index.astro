@@ -460,12 +460,15 @@ const categories = [
 		</div>
 	</footer>
 
-	<!-- Floating WhatsApp Button -->
-	<a href="https://wa.me/601131822616" target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Contact us on WhatsApp">
-		<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-			<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+	<!-- Floating Cart Button -->
+	<button class="cart-float" id="floatingCartBtn" aria-label="Open Shopping Cart" onclick="openCart()">
+		<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+			<circle cx="9" cy="21" r="1"/>
+			<circle cx="20" cy="21" r="1"/>
+			<path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
 		</svg>
-	</a>
+		<span class="cart-float-count" id="floatCartCount">0</span>
+	</button>
 
 	<!-- Toast Notification -->
 	<div id="toast" class="toast">
@@ -577,6 +580,19 @@ const categories = [
 			<!-- Customer Details Form -->
 			<form class="customer-details-form" id="customerForm" onsubmit="event.preventDefault();">
 				<h3>Your Details</h3>
+				<div class="form-group">
+					<label>Delivery Method <span style="color: red">*</span></label>
+					<div class="radio-group">
+						<label class="radio-label">
+							<input type="radio" name="deliveryMethod" value="delivery" checked onchange="handleDeliveryMethodChange()">
+							<span>Delivery (Fee applies < RM50)</span>
+						</label>
+						<label class="radio-label">
+							<input type="radio" name="deliveryMethod" value="pickup" onchange="handleDeliveryMethodChange()">
+							<span>Self Pickup</span>
+						</label>
+					</div>
+				</div>
 				<div class="form-group">
 					<label for="customerName">Name <span style="color: red">*</span></label>
 					<input type="text" id="customerName" required placeholder="Enter your full name">
@@ -1749,12 +1765,12 @@ const categories = [
 			}
 		}
 
-		/* Floating WhatsApp Button */
-		.whatsapp-float {
+		/* Floating Cart Button */
+		.cart-float {
 			position: fixed;
 			bottom: 2rem;
 			right: 2rem;
-			background: var(--color-whatsapp);
+			background: var(--color-dark);
 			color: var(--color-white);
 			width: 60px;
 			height: 60px;
@@ -1762,33 +1778,59 @@ const categories = [
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			box-shadow: 0 8px 30px rgba(37, 211, 102, 0.3);
+			box-shadow: 0 8px 30px rgba(44, 24, 16, 0.3);
 			transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 			z-index: 1000;
 			animation: floatPulse 3s ease-in-out infinite;
 		}
 
+		.cart-float-count {
+			position: absolute;
+			top: -5px;
+			right: -5px;
+			background: var(--color-primary-dark);
+			color: white;
+			font-size: 0.8rem;
+			font-weight: 700;
+			width: 24px;
+			height: 24px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border: 2px solid white;
+			opacity: 0;
+			transform: scale(0);
+			transition: all 0.3s ease;
+		}
+
+		.cart-float-count.visible {
+			opacity: 1;
+			transform: scale(1);
+		}
+
 		@keyframes floatPulse {
 			0%, 100% {
 				transform: translateY(0);
-				box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5);
+				box-shadow: 0 8px 30px rgba(44, 24, 16, 0.3);
 			}
 			50% {
 				transform: translateY(-8px);
-				box-shadow: 0 12px 40px rgba(37, 211, 102, 0.6), 0 0 0 15px rgba(37, 211, 102, 0.1);
+				box-shadow: 0 12px 40px rgba(44, 24, 16, 0.4), 0 0 0 15px rgba(44, 24, 16, 0.05);
 			}
 		}
 
-		.whatsapp-float:hover {
+		.cart-float:hover {
 			transform: scale(1.15) rotate(5deg) !important;
-			box-shadow: 0 12px 40px rgba(37, 211, 102, 0.7);
+			box-shadow: 0 12px 40px rgba(44, 24, 16, 0.5);
+			background: var(--color-primary-dark);
 		}
 
-		.whatsapp-float svg {
+		.cart-float svg {
 			transition: transform 0.3s ease;
 		}
 
-		.whatsapp-float:hover svg {
+		.cart-float:hover svg {
 			transform: scale(1.1);
 		}
 
@@ -2451,6 +2493,41 @@ const categories = [
 			font-weight: 500;
 		}
 
+		.radio-group {
+			display: flex;
+			gap: 1rem;
+			margin-top: 0.5rem;
+		}
+
+		.radio-label {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			cursor: pointer;
+			padding: 0.8rem 1.2rem;
+			background: rgba(255, 255, 255, 0.5);
+			border: 1px solid rgba(0,0,0,0.1);
+			border-radius: 12px;
+			transition: all 0.3s ease;
+			flex: 1;
+		}
+
+		.radio-label:hover {
+			background: rgba(255, 255, 255, 0.8);
+			border-color: var(--color-primary);
+		}
+
+		.radio-label input[type="radio"] {
+			accent-color: var(--color-primary);
+			width: 1.2rem;
+			height: 1.2rem;
+		}
+
+		.radio-label span {
+			font-weight: 500;
+			color: var(--color-dark);
+		}
+
 		.customer-details-form input,
 		.customer-details-form textarea {
 			width: 100%;
@@ -2739,14 +2816,14 @@ const categories = [
 				grid-template-columns: 1fr;
 			}
 
-			.whatsapp-float {
+			.cart-float {
 				bottom: 1.5rem;
 				right: 1.5rem;
 				width: 55px;
 				height: 55px;
 			}
 
-			.whatsapp-float svg {
+			.cart-float svg {
 				width: 26px;
 				height: 26px;
 			}
@@ -3175,6 +3252,18 @@ const categories = [
 		function updateCartCount() {
 			const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 			cartCount.textContent = totalItems;
+			
+			// Update floating cart count
+			const floatCartCount = document.getElementById('floatCartCount');
+			if (floatCartCount) {
+				floatCartCount.textContent = totalItems;
+				if (totalItems > 0) {
+					floatCartCount.classList.add('visible');
+				} else {
+					floatCartCount.classList.remove('visible');
+				}
+			}
+
 			if (totalItems > 0) {
 				cartCount.classList.remove('hidden');
 			} else {
@@ -3425,6 +3514,18 @@ const categories = [
 					</div>
 				`).join('')}
 				<div class="summary-divider"></div>
+				<div class="summary-item" id="smallOrderFeeRow" style="display: none; color: var(--color-primary-dark);">
+					<div class="summary-item-info">
+						<div class="summary-item-icon">🛵</div>
+						<div class="summary-item-details">
+							<h4>Small Order Fee</h4>
+							<div class="summary-item-meta">Orders below RM 50.00</div>
+						</div>
+					</div>
+					<div class="summary-item-price">
+						<div class="summary-item-total">RM 10.00</div>
+					</div>
+				</div>
 				<div class="summary-total">
 					<span class="summary-total-label">Total Amount</span>
 					<span class="summary-total-amount">${formatPrice(calculateTotal())}</span>
@@ -3438,6 +3539,9 @@ const categories = [
 			pushModalState('order');
 			orderModal.classList.add('active');
 			hideCartUI();
+			
+			// Initial check for fee
+			setTimeout(updateOrderSummaryTotal, 0);
 		});
 
 		closeModalBtn.addEventListener('click', () => {
@@ -3448,6 +3552,53 @@ const categories = [
 			history.back();
 		});
 
+		// Delivery Method Logic
+		window.handleDeliveryMethodChange = function() {
+			const deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked').value;
+			const addressInput = document.getElementById('customerAddress');
+			const addressLabel = document.querySelector('label[for="customerAddress"]');
+			
+			// Update Address Field
+			if (deliveryMethod === 'pickup') {
+				addressInput.required = false;
+				addressInput.placeholder = "Not required for self pickup";
+				addressInput.disabled = true;
+				addressInput.value = "Self Pickup";
+				addressLabel.innerHTML = 'Address (Optional)';
+			} else {
+				addressInput.required = true;
+				addressInput.placeholder = "Enter your full delivery address including postcode and city";
+				addressInput.disabled = false;
+				if (addressInput.value === "Self Pickup") addressInput.value = "";
+				addressLabel.innerHTML = 'Delivery Address <span style="color: red">*</span>';
+			}
+
+			// Update Total with Small Order Fee
+			updateOrderSummaryTotal();
+		};
+
+		function updateOrderSummaryTotal() {
+			const deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked')?.value || 'delivery';
+			const subtotal = calculateTotal();
+			let total = subtotal;
+			let fee = 0;
+			const SMALL_ORDER_THRESHOLD = 50;
+			const SMALL_ORDER_FEE = 10;
+
+			const feeRow = document.getElementById('smallOrderFeeRow');
+			const totalEl = document.querySelector('.summary-total-amount');
+
+			if (deliveryMethod === 'delivery' && subtotal < SMALL_ORDER_THRESHOLD) {
+				fee = SMALL_ORDER_FEE;
+				total += fee;
+				if (feeRow) feeRow.style.display = 'flex';
+			} else {
+				if (feeRow) feeRow.style.display = 'none';
+			}
+
+			if (totalEl) totalEl.textContent = formatPrice(total);
+		}
+
 		sendWhatsAppBtn.addEventListener('click', async () => {
 			const btn = sendWhatsAppBtn;
 			
@@ -3457,6 +3608,19 @@ const categories = [
 			const phoneInput = document.getElementById('customerPhone');
 			const addressInput = document.getElementById('customerAddress');
 			const honeypotInput = document.getElementById('website_url');
+			const deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked').value;
+			
+			// Calculate Final Total
+			const subtotal = calculateTotal();
+			let total = subtotal;
+			let fee = 0;
+			const SMALL_ORDER_THRESHOLD = 50;
+			const SMALL_ORDER_FEE = 10;
+
+			if (deliveryMethod === 'delivery' && subtotal < SMALL_ORDER_THRESHOLD) {
+				fee = SMALL_ORDER_FEE;
+				total += fee;
+			}
 			
 			// Honeypot check
 			if (honeypotInput.value) {
@@ -3477,7 +3641,7 @@ const categories = [
 			const phone = phoneInput.value.trim();
 			const address = addressInput.value.trim();
 
-			if (!name || !phone || !address) {
+			if (!name || !phone || (!address && deliveryMethod === 'delivery')) {
 				// Fallback if browser validation passes but values are empty (e.g. spaces)
 				alert('Please enter your name, phone number, and delivery address.');
 				return;
@@ -3494,7 +3658,9 @@ const categories = [
 			try {
 				const payload = {
 					items: cart,
-					customer: { name, phone, address }
+					customer: { name, phone, address, deliveryMethod },
+					fee: fee,
+					total: total
 				};
 				
 				// Non-blocking fetch, but we want to know if it fails for debugging
@@ -3524,9 +3690,16 @@ const categories = [
 				`${item.name} - ${item.quantity} pcs (${formatPrice(item.price * item.quantity)})`
 			).join('%0A');
 			
-			const total = formatPrice(calculateTotal());
+			const formattedTotal = formatPrice(total);
 			const encodedAddress = encodeURIComponent(address);
-			const message = `🍪 *ZenCookies Order*%0A%0A*Customer:* ${encodeURIComponent(name)}%0A*Phone:* ${encodeURIComponent(phone)}%0A*Delivery Address:* ${encodedAddress}%0A%0A*Order Details:*%0A${orderDetails}%0A%0A*Total: ${total}*%0A%0APlease confirm availability and provide payment details. Thank you!`;
+			const methodText = deliveryMethod === 'pickup' ? 'Self Pickup' : 'Delivery';
+			
+			let feeText = '';
+			if (fee > 0) {
+				feeText = `%0A*Small Order Fee:* ${formatPrice(fee)}`;
+			}
+			
+			const message = `🍪 *ZenCookies Order*%0A%0A*Method:* ${methodText}%0A*Customer:* ${encodeURIComponent(name)}%0A*Phone:* ${encodeURIComponent(phone)}%0A*Address:* ${encodedAddress}%0A%0A*Order Details:*%0A${orderDetails}${feeText}%0A%0A*Total: ${formattedTotal}*%0A%0APlease confirm availability and provide payment details. Thank you!`;
 			
 			const whatsappUrl = `https://wa.me/601131822616?text=${message}`;
 			
