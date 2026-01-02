@@ -187,28 +187,21 @@ const categories = [
 										<span>{category.badge}</span>
 									</div>
 								)}
-								<div class="select-wrapper">
-									<select 
-										class="variation-select" 
-										id={`variation-select-${category.id}`}
-										data-category={category.id}
-									>
-										{category.variations.map((variation, vIndex) => (
-											<option 
-												value={variation.id}
-												data-name={variation.name}
-												data-price={variation.price}
-												data-desc={variation.description}
-												data-image={variation.image}
-												selected={vIndex === 0}
-											>
-												{variation.shortName} • RM {variation.price.toFixed(2)}
-											</option>
-										))}
-									</select>
-									<svg class="select-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-										<path d="M6 9l6 6 6-6"/>
-									</svg>
+								<div class="variations-pills">
+									{category.variations.map((variation, vIndex) => (
+										<button 
+											class={`variation-pill ${vIndex === 0 ? 'active' : ''}`}
+											data-category={category.id}
+											data-id={variation.id}
+											data-name={variation.name}
+											data-price={variation.price}
+											data-desc={variation.description}
+											data-image={variation.image}
+											aria-label={`Select ${variation.shortName}`}
+										>
+											{variation.shortName}
+										</button>
+									))}
 								</div>
 							</div>
 
@@ -473,6 +466,12 @@ const categories = [
 			<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
 		</svg>
 	</a>
+
+	<!-- Toast Notification -->
+	<div id="toast" class="toast">
+		<div class="toast-icon">✓</div>
+		<div class="toast-message">Added to cart</div>
+	</div>
 
 	<!-- Cart Sidebar -->
 	<div class="cart-sidebar" id="cartSidebar">
@@ -1396,6 +1395,7 @@ const categories = [
 			justify-content: center;
 			cursor: pointer;
 			transition: background 0.2s;
+			touch-action: manipulation;
 		}
 
 		.capsule-btn:hover {
@@ -1415,6 +1415,7 @@ const categories = [
 			align-items: center;
 			justify-content: center;
 			white-space: nowrap;
+			touch-action: manipulation;
 		}
 
 		.quantity-selector-full {
@@ -2977,51 +2978,82 @@ const categories = [
 			width: 100%;
 		}
 
-		.select-wrapper {
-			position: relative;
-			width: 100%;
+		.variations-pills {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
 		}
 
-		.variation-select {
-			width: 100%;
-			appearance: none;
-			-webkit-appearance: none;
-			background: rgba(255, 255, 255, 0.2);
-			border: 1px solid rgba(255, 255, 255, 0.3);
-			border-radius: 15px;
-			padding: 0.8rem 1rem;
-			font-size: 0.95rem;
-			color: white;
+		.variation-pill {
+			padding: 0.5rem 1rem;
+			border-radius: 20px;
+			font-size: 0.85rem;
+			font-weight: 500;
 			cursor: pointer;
+			transition: all 0.3s ease;
+			background: rgba(255, 255, 255, 0.2);
+			color: white;
+			border: 1px solid rgba(255, 255, 255, 0.3);
 			backdrop-filter: blur(4px);
 			font-family: var(--font-body);
-			font-weight: 500;
-			transition: all 0.3s ease;
 		}
 
-		.variation-select:hover, .variation-select:focus {
+		.variation-pill:hover {
 			background: rgba(255, 255, 255, 0.3);
-			outline: none;
-			border-color: rgba(255, 255, 255, 0.5);
+			transform: translateY(-2px);
 		}
 
-		.variation-select option {
-			background: #333;
-			color: white;
-			padding: 10px;
+		.variation-pill.active {
+			background: white;
+			color: var(--color-dark);
+			border-color: white;
+			font-weight: 700;
+			box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 		}
 
-		.select-arrow {
-			position: absolute;
-			right: 1rem;
-			top: 50%;
-			transform: translateY(-50%);
-			pointer-events: none;
-			color: white;
-		}
+
 
 		.shake {
 			animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+		}
+
+		/* Toast Notification */
+		.toast {
+			position: fixed;
+			bottom: 2rem;
+			left: 50%;
+			transform: translateX(-50%) translateY(100px);
+			background: rgba(0, 0, 0, 0.8);
+			color: white;
+			padding: 0.8rem 1.5rem;
+			border-radius: 50px;
+			display: flex;
+			align-items: center;
+			gap: 0.8rem;
+			z-index: 2000;
+			opacity: 0;
+			transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+			backdrop-filter: blur(10px);
+			box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+			font-weight: 500;
+			white-space: nowrap;
+		}
+
+		.toast.show {
+			transform: translateX(-50%) translateY(0);
+			opacity: 1;
+		}
+
+		.toast-icon {
+			width: 20px;
+			height: 20px;
+			background: var(--color-whatsapp);
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 0.8rem;
+			font-weight: 700;
 		}
 
 		@keyframes shake {
@@ -3053,14 +3085,18 @@ const categories = [
 		];
 
 		// Variation Selection
-		function handleVariationChange(selectElement) {
-			const selectedOption = selectElement.options[selectElement.selectedIndex];
-			const categoryId = selectElement.dataset.category;
-			const id = selectedOption.value;
-			const name = selectedOption.dataset.name;
-			const price = parseFloat(selectedOption.dataset.price);
-			const desc = selectedOption.dataset.desc;
-			const image = selectedOption.dataset.image;
+		function handleVariationChange(pillElement) {
+			const categoryId = pillElement.dataset.category;
+			const id = pillElement.dataset.id;
+			const name = pillElement.dataset.name;
+			const price = parseFloat(pillElement.dataset.price);
+			const desc = pillElement.dataset.desc;
+			const image = pillElement.dataset.image;
+
+			// Update Active State
+			const pills = document.querySelectorAll(`.variation-pill[data-category="${categoryId}"]`);
+			pills.forEach(p => p.classList.remove('active'));
+			pillElement.classList.add('active');
 
 			// Update UI
 			const imgEl = document.getElementById(`img-${categoryId}`);
@@ -3079,18 +3115,24 @@ const categories = [
 				addBtn.dataset.cookiePrice = price;
 				addBtn.dataset.cookieImage = image;
 				
-				// Reset quantity and text when variation changes
+				// Check if item is in cart
+				const cartItem = cart.find(item => item.id == id);
 				const input = document.getElementById(`qty-${categoryId}`);
+				
 				if (input) {
-					input.value = 0;
+					if (cartItem) {
+						input.value = cartItem.quantity;
+					} else {
+						input.value = 0;
+					}
 					updateCapsuleText(categoryId);
 				}
 			}
 		}
 
 		// Event Delegation for dynamic elements
-		document.addEventListener('change', (e) => {
-			if (e.target.classList.contains('variation-select')) {
+		document.addEventListener('click', (e) => {
+			if (e.target.classList.contains('variation-pill')) {
 				handleVariationChange(e.target);
 			}
 		});
@@ -3118,8 +3160,18 @@ const categories = [
 		const closePaymentModalBtn = document.getElementById('closePaymentModalBtn');
 		const sendPaymentProofBtn = document.getElementById('sendPaymentProofBtn');
 		const paymentAmount = document.getElementById('paymentAmount');
+		const toast = document.getElementById('toast');
 
 		// Utility Functions
+		function showToast(message) {
+			const toastMsg = toast.querySelector('.toast-message');
+			toastMsg.textContent = message;
+			toast.classList.add('show');
+			setTimeout(() => {
+				toast.classList.remove('show');
+			}, 3000);
+		}
+
 		function updateCartCount() {
 			const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 			cartCount.textContent = totalItems;
@@ -3248,19 +3300,11 @@ const categories = [
 			}
 
 			renderCart();
-			openCart();
+			// openCart(); // Disabled auto-open for better UX
 
 			// Visual feedback
-			const btn = document.querySelector(`.capsule-add-btn[data-cookie-id="${cookieId}"]`);
-			if (btn) {
-				const originalText = btn.querySelector('span').textContent;
-				btn.querySelector('span').textContent = "Added!";
-				setTimeout(() => {
-					// The text will be reset by the updateCapsuleText call in the click handler
-					// But just in case:
-					// btn.querySelector('span').textContent = originalText; 
-				}, 1000);
-			}
+			showToast(`Added ${cookie.name} to cart`);
+			updateCapsuleText(categoryId); // Update text to show "Update" state
 		}
 
 		// Quantity Controls
@@ -3313,10 +3357,10 @@ const categories = [
 				// Reset after adding? Optional. Let's keep it for now or reset to 0.
 				// For better UX, maybe reset to 0 to show "Add to Cart" again?
 				// Or keep it to allow adding more? Let's reset to 0 for "fresh" state.
-				setTimeout(() => {
-					input.value = 0;
-					updateCapsuleText(categoryId);
-				}, 1000);
+				// setTimeout(() => {
+				// 	input.value = 0;
+				// 	updateCapsuleText(categoryId);
+				// }, 1000);
 			}
 		});
 
@@ -3326,13 +3370,30 @@ const categories = [
 			const addBtn = document.getElementById(`add-btn-${categoryId}`);
 			const quantity = parseInt(input.value) || 0;
 			const price = parseFloat(addBtn.dataset.cookiePrice) || 0;
+			const cookieId = parseInt(addBtn.dataset.cookieId);
+			
+			// Check if this specific item is already in cart
+			const inCart = cart.find(item => item.id === cookieId);
 
 			if (quantity === 0) {
-				btnText.textContent = "Add to Cart";
-				addBtn.style.color = "var(--color-dark)";
+				if (inCart) {
+					// If in cart but input is 0 (user decreased to 0), show "Remove?" or just "Add to Cart"
+					// But wait, if input is 0, it means they want to add 0? 
+					// Or maybe we should show current cart qty if they haven't touched it?
+					// Let's keep it simple: Input reflects what they WANT to add/update.
+					btnText.textContent = "Add to Cart";
+					addBtn.style.color = "var(--color-dark)";
+				} else {
+					btnText.textContent = "Add to Cart";
+					addBtn.style.color = "var(--color-dark)";
+				}
 			} else {
 				const total = (quantity * price).toFixed(2);
-				btnText.textContent = `Add ${quantity} • RM ${total}`;
+				if (inCart) {
+					btnText.textContent = `Update to ${quantity} • RM ${total}`;
+				} else {
+					btnText.textContent = `Add ${quantity} • RM ${total}`;
+				}
 				addBtn.style.color = "var(--color-primary-dark)";
 			}
 		}
@@ -3446,13 +3507,13 @@ const categories = [
 					if (!res.ok) {
 						const errText = await res.text();
 						console.error('Order creation failed:', res.status, errText);
-						alert(`Debug: Order failed to save to Akaunting. Error ${res.status}: ${errText}`);
+						// alert(`Debug: Order failed to save to Akaunting. Error ${res.status}: ${errText}`);
 					} else {
 						console.log('Order saved to Akaunting successfully');
 					}
 				}).catch(err => {
 					console.error('Failed to create Akaunting invoice:', err);
-					alert('Debug: Network error saving order to Akaunting: ' + err.message);
+					// alert('Debug: Network error saving order to Akaunting: ' + err.message);
 				});
 			} catch (e) {
 				console.error(e);
@@ -3469,18 +3530,9 @@ const categories = [
 			
 			const whatsappUrl = `https://wa.me/601131822616?text=${message}`;
 			
-			// Open payment modal
-			pushModalState('payment');
-			orderModal.classList.remove('active');
-			paymentModal.classList.add('active');
-			paymentAmount.textContent = total;
+			// Redirect to Thank You page
+			window.location.href = '/thank-you';
 			
-			// Reset button state after a delay (in case they come back)
-			setTimeout(() => {
-				btn.disabled = false;
-				btn.innerHTML = originalBtnText;
-			}, 2000);
-
 			// Open WhatsApp in new tab
 			window.open(whatsappUrl, '_blank');
 		});
