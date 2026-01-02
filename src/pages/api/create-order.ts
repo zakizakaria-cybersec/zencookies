@@ -2,6 +2,10 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 
+// Webhook server URL - update this if running on a different host
+const WEBHOOK_URL = import.meta.env.WEBHOOK_URL || 'http://localhost:3001';
+const WEBHOOK_SECRET = import.meta.env.WEBHOOK_SECRET || '';
+
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     // Handle sendBeacon (text/plain) or fetch (application/json)
@@ -33,17 +37,79 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
-    // Akaunting webhook temporarily disabled
-    // const invoice = await createAkauntingInvoice(items, customer, locals);
+    // Call the Playwright webhook server to create the invoice
+    try {
+      const webhookPayload = {
+        customer: customer ? {
+          name: customer.name,
+          phone: customer.phone,
+          address: customer.address,
+          city: customer.city,
+          zip: customer.zip,
+          state: customer.state,
+          email: customer.email
+        } : undefined,
+        items: items.map((item: any) => ({
+          name: item.name,
+          quantity: item.quantity || 1,
+          price: item.price
+        }))
+      };
 
-    return new Response(JSON.stringify({
-      success: true,
-      message: 'Order received. Akaunting webhook is currently disabled.',
-      invoice: null
-    }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    });
+      const webhookHeaders: Record<string, string> = {
+        'Content-Type': 'application/json'
+      };
+      
+      if (WEBHOOK_SECRET) {
+        webhookHeaders['X-Webhook-Secret'] = WEBHOOK_SECRET;
+      }
+
+      console.log('Calling webhook server:', `${WEBHOOK_URL}/webhook/create-invoice`);
+      
+      const webhookResponse = await fetch(`${WEBHOOK_URL}/webhook/create-invoice`, {
+        method: 'POST',
+        headers: webhookHeaders,
+        body: JSON.stringify(webhookPayload)
+      });
+
+      const webhookResult = await webhookResponse.json();
+      
+      if (!webhookResponse.ok) {
+        console.error('Webhook error:', webhookResult);
+        return new Response(JSON.stringify({
+          success: false,
+          message: 'Failed to create invoice',
+          error: webhookResult.message || 'Webhook error'
+        }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+
+      return new Response(JSON.stringify({
+        success: true,
+        message: 'Invoice created successfully',
+        invoice: webhookResult.data
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+    } catch (webhookError: any) {
+      console.error('Failed to connect to webhook server:', webhookError.message);
+      
+      // Return success to the user but log the webhook failure
+      // This prevents blocking the order if the invoice server is down
+      return new Response(JSON.stringify({
+        success: true,
+        message: 'Order received. Invoice creation will be processed later.',
+        invoice: null,
+        webhookError: webhookError.message
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
   } catch (error: any) {
     console.error('Error creating order:', error);
     return new Response(JSON.stringify({ 

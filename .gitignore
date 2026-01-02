@@ -2,16 +2,16 @@
 dist/
 # generated types
 .astro/
-
+webhook/
 # dependencies
 node_modules/
-
+.dockerignore
 # logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-
+.env.example
 
 # environment variables
 .env

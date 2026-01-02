@@ -576,15 +576,19 @@ const categories = [
 			</div>
 
 			<!-- Customer Details Form -->
-			<form class="customer-details-form" id="customerForm" style="padding: 0 2.5rem 2rem;" onsubmit="event.preventDefault();">
-				<h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: var(--color-dark);">Your Details</h3>
-				<div class="form-group" style="margin-bottom: 1rem;">
-					<label for="customerName" style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">Name <span style="color: red">*</span></label>
-					<input type="text" id="customerName" required placeholder="Enter your name" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; background: rgba(255,255,255,0.8); font-size: 1rem;">
+			<form class="customer-details-form" id="customerForm" onsubmit="event.preventDefault();">
+				<h3>Your Details</h3>
+				<div class="form-group">
+					<label for="customerName">Name <span style="color: red">*</span></label>
+					<input type="text" id="customerName" required placeholder="Enter your full name">
 				</div>
-				<div class="form-group" style="margin-bottom: 1rem;">
-					<label for="customerPhone" style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #666;">Phone Number <span style="color: red">*</span></label>
-					<input type="tel" id="customerPhone" required placeholder="e.g. 0123456789" style="width: 100%; padding: 0.8rem 1rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; background: rgba(255,255,255,0.8); font-size: 1rem;">
+				<div class="form-group">
+					<label for="customerPhone">Phone Number <span style="color: red">*</span></label>
+					<input type="tel" id="customerPhone" required placeholder="e.g. 0123456789">
+				</div>
+				<div class="form-group">
+					<label for="customerAddress">Delivery Address <span style="color: red">*</span></label>
+					<textarea id="customerAddress" required placeholder="Enter your full delivery address including postcode and city" rows="3"></textarea>
 				</div>
 				<!-- Honeypot field for spam protection -->
 				<input type="text" id="website_url" name="website_url" style="display:none !important;" tabindex="-1" autocomplete="off">
@@ -2421,6 +2425,55 @@ const categories = [
 			line-height: 1.6;
 		}
 
+		.customer-details-form {
+			background: rgba(255, 255, 255, 0.3);
+			border-top: 1px solid rgba(0,0,0,0.05);
+			margin-top: 0.5rem;
+			padding: 1.5rem 2.5rem 2rem;
+		}
+
+		.customer-details-form h3 {
+			font-size: 1.2rem;
+			margin-bottom: 1rem;
+			color: var(--color-dark);
+		}
+
+		.customer-details-form .form-group {
+			margin-bottom: 1rem;
+		}
+
+		.customer-details-form label {
+			display: block;
+			margin-bottom: 0.5rem;
+			font-size: 0.9rem;
+			color: #666;
+			font-weight: 500;
+		}
+
+		.customer-details-form input,
+		.customer-details-form textarea {
+			width: 100%;
+			padding: 0.8rem 1rem;
+			border: 1px solid rgba(0,0,0,0.1);
+			border-radius: 12px;
+			background: rgba(255,255,255,0.8);
+			font-size: 1rem;
+			transition: border-color 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		.customer-details-form input:focus,
+		.customer-details-form textarea:focus {
+			outline: none;
+			border-color: var(--color-primary);
+			box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+		}
+
+		.customer-details-form textarea {
+			resize: vertical;
+			font-family: inherit;
+			min-height: 80px;
+		}
+
 		.modal-actions {
 			display: flex;
 			gap: 1rem;
@@ -2728,8 +2781,13 @@ const categories = [
 			.modal-header,
 			.order-summary-content,
 			.modal-actions,
-			.payment-content {
+			.payment-content,
+			.customer-details-form {
 				padding: 1.5rem;
+			}
+
+			.customer-details-form {
+				padding-bottom: 1rem;
 			}
 
 			.modal-actions {
@@ -3336,6 +3394,7 @@ const categories = [
 			const form = document.getElementById('customerForm');
 			const nameInput = document.getElementById('customerName');
 			const phoneInput = document.getElementById('customerPhone');
+			const addressInput = document.getElementById('customerAddress');
 			const honeypotInput = document.getElementById('website_url');
 			
 			// Honeypot check
@@ -3355,10 +3414,11 @@ const categories = [
 
 			const name = nameInput.value.trim();
 			const phone = phoneInput.value.trim();
+			const address = addressInput.value.trim();
 
-			if (!name || !phone) {
+			if (!name || !phone || !address) {
 				// Fallback if browser validation passes but values are empty (e.g. spaces)
-				alert('Please enter your name and phone number.');
+				alert('Please enter your name, phone number, and delivery address.');
 				return;
 			}
 
@@ -3373,7 +3433,7 @@ const categories = [
 			try {
 				const payload = {
 					items: cart,
-					customer: { name, phone }
+					customer: { name, phone, address }
 				};
 				
 				// Non-blocking fetch, but we want to know if it fails for debugging
@@ -3404,7 +3464,8 @@ const categories = [
 			).join('%0A');
 			
 			const total = formatPrice(calculateTotal());
-			const message = `🍪 *ZenCookies Order*%0A%0A*Customer:* ${name} (${phone})%0A%0A${orderDetails}%0A%0A*Total: ${total}*%0A%0APlease confirm availability and provide payment details. Thank you!`;
+			const encodedAddress = encodeURIComponent(address);
+			const message = `🍪 *ZenCookies Order*%0A%0A*Customer:* ${encodeURIComponent(name)}%0A*Phone:* ${encodeURIComponent(phone)}%0A*Delivery Address:* ${encodedAddress}%0A%0A*Order Details:*%0A${orderDetails}%0A%0A*Total: ${total}*%0A%0APlease confirm availability and provide payment details. Thank you!`;
 			
 			const whatsappUrl = `https://wa.me/601131822616?text=${message}`;
 			
