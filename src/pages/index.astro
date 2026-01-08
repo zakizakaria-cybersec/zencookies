@@ -592,6 +592,14 @@ const categories = [
 							<span>Self Pickup</span>
 						</label>
 					</div>
+					
+					<!-- Free Delivery Zone Checkbox -->
+					<div id="freeDeliveryZoneContainer" style="margin-top: 10px; display: block;">
+						<label class="radio-label" style="width: 100%; box-sizing: border-box; align-items: flex-start;">
+							<input type="checkbox" id="isFreeZone" onchange="updateOrderSummaryTotal()" style="margin-top: 3px; flex-shrink: 0; width: 1.1rem; height: 1.1rem; accent-color: var(--color-primary);">
+							<span style="font-size: 0.95rem; line-height: 1.4; color: var(--color-dark);">I live in <strong>Gelang Patah</strong> or <strong>Iskandar Puteri</strong> area (Free Delivery)</span>
+						</label>
+					</div>
 				</div>
 				<div class="form-group">
 					<label for="customerName">Name <span style="color: red">*</span></label>
@@ -3679,6 +3687,8 @@ const categories = [
 			const deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked').value;
 			const addressInput = document.getElementById('customerAddress');
 			const addressLabel = document.querySelector('label[for="customerAddress"]');
+			const freeZoneContainer = document.getElementById('freeDeliveryZoneContainer');
+			const isFreeZoneCheckbox = document.getElementById('isFreeZone');
 			
 			// Update Address Field
 			if (deliveryMethod === 'pickup') {
@@ -3687,12 +3697,19 @@ const categories = [
 				addressInput.disabled = true;
 				addressInput.value = "Self Pickup";
 				addressLabel.innerHTML = 'Address (Optional)';
+				
+				// Hide free zone option
+				if (freeZoneContainer) freeZoneContainer.style.display = 'none';
+				if (isFreeZoneCheckbox) isFreeZoneCheckbox.checked = false;
 			} else {
 				addressInput.required = true;
 				addressInput.placeholder = "Enter your full delivery address including postcode and city";
 				addressInput.disabled = false;
 				if (addressInput.value === "Self Pickup") addressInput.value = "";
 				addressLabel.innerHTML = 'Delivery Address <span style="color: red">*</span>';
+				
+				// Show free zone option
+				if (freeZoneContainer) freeZoneContainer.style.display = 'block';
 			}
 
 			// Update Total with Small Order Fee
@@ -3701,6 +3718,7 @@ const categories = [
 
 		function updateOrderSummaryTotal() {
 			const deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked')?.value || 'delivery';
+			const isFreeZone = document.getElementById('isFreeZone')?.checked || false;
 			const subtotal = calculateTotal();
 			let total = subtotal;
 			let fee = 0;
@@ -3710,16 +3728,26 @@ const categories = [
 			const feeRow = document.getElementById('smallOrderFeeRow');
 			const totalEl = document.querySelector('.summary-total-amount');
 
-			if (deliveryMethod === 'delivery' && subtotal < SMALL_ORDER_THRESHOLD) {
+			// Apply fee if:
+			// 1. Delivery is selected
+			// 2. Subtotal is below threshold
+			// 3. User is NOT in the free zone
+			if (deliveryMethod === 'delivery' && subtotal < SMALL_ORDER_THRESHOLD && !isFreeZone) {
 				fee = SMALL_ORDER_FEE;
 				total += fee;
-				if (feeRow) feeRow.style.display = 'flex';
+				if (feeRow) {
+					feeRow.style.display = 'flex';
+					feeRow.querySelector('.summary-item-total').textContent = 'RM 10.00';
+					feeRow.querySelector('.summary-item-details h4').textContent = 'Small Order Fee';
+				}
 			} else {
 				if (feeRow) feeRow.style.display = 'none';
 			}
 
 			if (totalEl) totalEl.textContent = formatPrice(total);
 		}
+		// Expose for HTML attribute calls
+		window.updateOrderSummaryTotal = updateOrderSummaryTotal;
 
 		sendWhatsAppBtn.addEventListener('click', async () => {
 			const btn = sendWhatsAppBtn;
@@ -3731,6 +3759,7 @@ const categories = [
 			const addressInput = document.getElementById('customerAddress');
 			const honeypotInput = document.getElementById('website_url');
 			const deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked').value;
+			const isFreeZone = document.getElementById('isFreeZone')?.checked || false;
 			
 			// Calculate Final Total
 			const subtotal = calculateTotal();
@@ -3739,7 +3768,7 @@ const categories = [
 			const SMALL_ORDER_THRESHOLD = 50;
 			const SMALL_ORDER_FEE = 10;
 
-			if (deliveryMethod === 'delivery' && subtotal < SMALL_ORDER_THRESHOLD) {
+			if (deliveryMethod === 'delivery' && subtotal < SMALL_ORDER_THRESHOLD && !isFreeZone) {
 				fee = SMALL_ORDER_FEE;
 				total += fee;
 			}
@@ -3761,7 +3790,11 @@ const categories = [
 
 			const name = nameInput.value.trim();
 			const phone = phoneInput.value.trim();
-			const address = addressInput.value.trim();
+			let address = addressInput.value.trim();
+
+			if (isFreeZone) {
+				address += " [Free Zone: Gelang Patah / Iskandar Puteri]";
+			}
 
 			if (!name || !phone || (!address && deliveryMethod === 'delivery')) {
 				// Fallback if browser validation passes but values are empty (e.g. spaces)
@@ -3825,8 +3858,11 @@ const categories = [
 			
 			const whatsappUrl = `https://wa.me/601131822616?text=${message}`;
 			
+			// Generate transaction ID for conversion tracking
+			const transactionId = Date.now().toString();
+
 			// Redirect to Thank You page
-			window.location.href = '/thank-you';
+			window.location.href = `/thank-you?transaction_id=${transactionId}`;
 			
 			// Open WhatsApp in new tab
 			window.open(whatsappUrl, '_blank');

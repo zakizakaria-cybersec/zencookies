@@ -5,6 +5,10 @@ interface Props {
 }
 
 const { title, description = "Beli cookies sedap di Johor untuk majlis kahwin, kenduri & acara. Door gift premium, hantaran cookies, 100% Halal. Penghantaran percuma RM50+." } = Astro.props;
+
+// Google Ads Conversion Logic
+const transactionId = Astro.url.searchParams.get('transaction_id');
+const isConversionPage = Astro.url.pathname.includes('/thank-you') && !!transactionId;
 ---
 
 <!doctype html>
@@ -15,6 +19,25 @@ const { title, description = "Beli cookies sedap di Johor untuk majlis kahwin, k
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17858424099"></script>
+		<script is:inline>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', 'AW-17858424099');
+		</script>
+		
+		{isConversionPage && (
+			<script is:inline define:vars={{ transactionId }}>
+				gtag('event', 'conversion', {
+					'send_to': 'AW-17858424099/g1gVCIKziN8bEKPax8NC',
+					'transaction_id': transactionId
+				});
+			</script>
+		)}
+
 		<!-- Primary SEO Meta Tags -->
 		<title>{title}</title>
 		<meta name="description" content={description} />
